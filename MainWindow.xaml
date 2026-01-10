@@ -13,6 +13,7 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        Icon="pack://application:,,,/Assets/Images/LEVYTICKETMONITORlogo.ico"
         Background="#F5F7FA">
 
     <Window.Resources>
