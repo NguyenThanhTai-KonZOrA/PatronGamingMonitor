@@ -4,8 +4,8 @@
 
     <local:FilterMatchConverter x:Key="FilterMatchConverter"/>
 
-    <!-- Main color #274549 -->
-    <SolidColorBrush x:Key="PrimaryBrush" Color="#274549"/>
+    <!-- Main color #1A3650 -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="#1A3650"/>
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#1A2D30"/>
     <SolidColorBrush x:Key="HoverBrush" Color="#E1B7A7"/>
     <SolidColorBrush x:Key="ClickBrush" Color="#D4A595"/>
@@ -73,7 +73,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="HeaderBorder"
                                                       Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                      To="#274549"
+                                                      To="#1A3650"
                                                       Duration="0:0:0.3">
                                             <ColorAnimation.EasingFunction>
                                                 <QuadraticEase EasingMode="EaseOut"/>
@@ -138,7 +138,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="#274549"/>
+        <Setter Property="Foreground" Value="#1A3650"/>
     </Style>
 
     <!-- DataGrid Row Style -->
@@ -177,7 +177,7 @@
 
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="#E1B7A7"/>
-                <Setter Property="BorderBrush" Value="#274549"/>
+                <Setter Property="BorderBrush" Value="#1A3650"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
             </Trigger>
@@ -226,7 +226,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetName="ButtonBorder"
                                                       Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                      To="#274549"
+                                                      To="#1A3650"
                                                       Duration="0:0:0.3">
                                             <ColorAnimation.EasingFunction>
                                                 <QuadraticEase EasingMode="EaseOut"/>
@@ -286,15 +286,15 @@
                                     </Condition.Binding>
                                 </Condition>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="FilterBorder" Property="Background" Value="#274549"/>
-                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="#274549"/>
+                            <Setter TargetName="FilterBorder" Property="Background" Value="#1A3650"/>
+                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="#1A3650"/>
                             <Setter Property="Foreground" Value="#E1B7A7"/>
                         </MultiDataTrigger>
 
                         <!-- HOVER - Only when not selected -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="FilterBorder" Property="Background" Value="#E9ECEF"/>
-                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="#274549"/>
+                            <Setter TargetName="FilterBorder" Property="BorderBrush" Value="#1A3650"/>
                         </Trigger>
 
                         <!-- PRESSED -->
@@ -317,8 +317,8 @@
     <!-- Toggle Button Style for UsedStatus -->
     <Style x:Key="UsedStatusToggleStyle" TargetType="ToggleButton">
         <Setter Property="Background" Value="White"/>
-        <Setter Property="Foreground" Value="#274549"/>
-        <Setter Property="BorderBrush" Value="#274549"/>
+        <Setter Property="Foreground" Value="#1A3650"/>
+        <Setter Property="BorderBrush" Value="#1A3650"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -340,13 +340,13 @@
                         <!-- Checked (InUse) -->
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="ToggleBorder" Property="Background" Value="#E1B7A7"/>
-                            <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#274549"/>
-                            <Setter Property="Foreground" Value="#274549"/>
+                            <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#1A3650"/>
+                            <Setter Property="Foreground" Value="#1A3650"/>
                         </Trigger>
 
                         <!-- Unchecked (Used) -->
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="ToggleBorder" Property="Background" Value="#274549"/>
+                            <Setter TargetName="ToggleBorder" Property="Background" Value="#1A3650"/>
                             <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#E1B7A7"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
@@ -386,11 +386,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="#E9ECEF"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#274549"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#1A3650"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#274549"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#274549"/>
+                            <Setter TargetName="Border" Property="Background" Value="#1A3650"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#1A3650"/>
                             <Setter Property="Foreground" Value="#E1B7A7"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

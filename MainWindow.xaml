@@ -22,9 +22,9 @@
         <convert:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
         <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="#1A2D30" Offset="0"/>
-            <GradientStop Color="#274549" Offset="0.5"/>
-            <GradientStop Color="#2A4D52" Offset="1"/>
+            <GradientStop Color="#233e57" Offset="0"/>
+            <GradientStop Color="#1A3650" Offset="0.5"/>
+            <GradientStop Color="#103252" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
 
@@ -177,7 +177,7 @@
                FontSize="17" 
                FontWeight="Bold"
                VerticalAlignment="Center"
-               Foreground="#274549"
+               Foreground="#1A3650"
                Margin="0,0,20,0"/>
 
                         <Button Content="All Players"
@@ -230,7 +230,7 @@
                                          BorderThickness="0"
                                          Background="Transparent"
                                          FontSize="13"
-                                         Foreground="#274549">
+                                         Foreground="#1A3650">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">
                                             <Setter Property="Template">
@@ -312,23 +312,23 @@
                    FontSize="14" 
                    FontWeight="Bold"
                    VerticalAlignment="Center"
-                   Foreground="#274549"
+                   Foreground="#1A3650"
                    Margin="0,0,15,0"/>
 
                             <CheckBox Content="12H"
-                                 IsChecked="{Binding IsInUseChecked}"
+                                 IsChecked="{Binding IsFilter12HoursChecked}"
                                  Style="{StaticResource StatusCheckBoxStyle}"
                                  Width="100" Height="40"
                                  Margin="0,0,8,0"/>
 
                             <CheckBox Content="24H"
-                                 IsChecked="{Binding IsOverstayedChecked}"
+                                 IsChecked="{Binding IsFilter24HoursChecked}"
                                  Style="{StaticResource StatusCheckBoxStyle}"
                                  Width="100" Height="40"
                                  Margin="0,0,8,0"/>
 
                             <CheckBox Content="48H"
-                                IsChecked="{Binding IsPlayingChecked}"
+                                IsChecked="{Binding IsFilter48HoursChecked}"
                                 Style="{StaticResource StatusCheckBoxStyle}"
                                 Width="100" Height="40"/>
                         </StackPanel>
@@ -358,15 +358,15 @@
                             Margin="0,0,0,12">
                         <Grid>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <Run Text="📊 Total Records: " FontWeight="Bold" Foreground="#274549" FontSize="14"/>
+                                <Run Text="📊 Total Records: " FontWeight="Bold" Foreground="#1A3650" FontSize="14"/>
                                 <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="Bold" Foreground="#E74C3C" FontSize="17"/>
                             </TextBlock>
 
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <Run Text="📄 Page " Foreground="#7F8C8D" FontSize="13"/>
-                                <Run Text="{Binding PageIndex, Mode=OneWay}" FontWeight="Bold" Foreground="#274549" FontSize="15"/>
+                                <Run Text="{Binding PageIndex, Mode=OneWay}" FontWeight="Bold" Foreground="#1A3650" FontSize="15"/>
                                 <Run Text=" of " Foreground="#7F8C8D" FontSize="13"/>
-                                <Run Text="{Binding TotalPages, Mode=OneWay}" FontWeight="Bold" Foreground="#274549" FontSize="15"/>
+                                <Run Text="{Binding TotalPages, Mode=OneWay}" FontWeight="Bold" Foreground="#1A3650" FontSize="15"/>
                             </TextBlock>
                         </Grid>
                     </Border>
@@ -429,7 +429,7 @@
                                       VerticalAlignment="Center">
                                 <!-- Wave Animation -->
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Ellipse x:Name="Wave1" Width="15" Height="15" Fill="#274549" Margin="5">
+                                    <Ellipse x:Name="Wave1" Width="15" Height="15" Fill="#1A3650" Margin="5">
                                         <Ellipse.RenderTransform>
                                             <TranslateTransform Y="0"/>
                                         </Ellipse.RenderTransform>
@@ -470,7 +470,7 @@
                                         </Ellipse.Triggers>
                                     </Ellipse>
 
-                                    <Ellipse x:Name="Wave3" Width="15" Height="15" Fill="#274549" Margin="5">
+                                    <Ellipse x:Name="Wave3" Width="15" Height="15" Fill="#1A3650" Margin="5">
                                         <Ellipse.RenderTransform>
                                             <TranslateTransform Y="0"/>
                                         </Ellipse.RenderTransform>
@@ -516,7 +516,7 @@
                                 <TextBlock Text="Loading tickets..."
                                            FontSize="16"
                                            FontWeight="SemiBold"
-                                           Foreground="#274549"
+                                           Foreground="#1A3650"
                                            HorizontalAlignment="Center"
                                            Margin="0,20,0,0"/>
                             </StackPanel>
@@ -546,13 +546,13 @@
                     <Border Background="#F0F4F5" 
                             CornerRadius="10" 
                             Padding="20,10"
-                            BorderBrush="#274549"
+                            BorderBrush="#1A3650"
                             BorderThickness="2">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding PageIndex}"
                                        FontSize="20"
                                        FontWeight="Bold"
-                                       Foreground="#274549"
+                                       Foreground="#1A3650"
                                        VerticalAlignment="Center"/>
                             <TextBlock Text=" / " 
                                        FontSize="20" 
@@ -562,7 +562,7 @@
                             <TextBlock Text="{Binding TotalPages}" 
                                        FontSize="20" 
                                        FontWeight="Bold"
-                                       Foreground="#274549"
+                                       Foreground="#1A3650"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
@@ -582,7 +582,7 @@
                             BlurRadius="18" 
                             ShadowDepth="3" 
                             Opacity="0.15" 
-                            Color="#274549"/>
+                            Color="#1A3650"/>
             <DropShadowEffect x:Key="TextShadowEffect" 
                             BlurRadius="10" 
                             ShadowDepth="2" 

@@ -110,6 +110,74 @@ namespace PatronGamingMonitor.ViewModels
             }
         }
 
+        private bool _filter12Hours = false;
+        private bool _filter24Hours = false;
+        private bool _filter48Hours = false;
+
+        public bool Filter12Hours
+        {
+            get => _filter12Hours;
+            set
+            {
+                if (_filter12Hours != value)
+                {
+                    _filter12Hours = value;
+                    OnPropertyChanged();
+                    Logger.Info("Filter12Hours changed → {Value}", value);
+                    ApplyClientSideFilterDebounced();
+                }
+            }
+        }
+
+        public bool Filter24Hours
+        {
+            get => _filter24Hours;
+            set
+            {
+                if (_filter24Hours != value)
+                {
+                    _filter24Hours = value;
+                    OnPropertyChanged();
+                    Logger.Info("Filter24Hours changed → {Value}", value);
+                    ApplyClientSideFilterDebounced();
+                }
+            }
+        }
+
+        public bool Filter48Hours
+        {
+            get => _filter48Hours;
+            set
+            {
+                if (_filter48Hours != value)
+                {
+                    _filter48Hours = value;
+                    OnPropertyChanged();
+                    Logger.Info("Filter48Hours changed → {Value}", value);
+                    ApplyClientSideFilterDebounced();
+                }
+            }
+        }
+
+        // Cập nhật properties cho checkboxes
+        public bool IsFilter12HoursChecked
+        {
+            get => Filter12Hours;
+            set => Filter12Hours = value;
+        }
+
+        public bool IsFilter24HoursChecked
+        {
+            get => Filter24Hours;
+            set => Filter24Hours = value;
+        }
+
+        public bool IsFilter48HoursChecked
+        {
+            get => Filter48Hours;
+            set => Filter48Hours = value;
+        }
+
         private string _filterType = "<30";
         public string FilterType
         {
@@ -152,10 +220,6 @@ namespace PatronGamingMonitor.ViewModels
                 {
                     _statusFilterInUse = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(IsInUseChecked));
-                    OnPropertyChanged(nameof(IsUsedChecked));
-                    OnPropertyChanged(nameof(IsOverstayedChecked));
-                    OnPropertyChanged(nameof(IsPlayingChecked));
                     Logger.Info("StatusFilter changed → {Status}",
                         value == true ? "InUse" : value == false ? "Used" : "All");
                     ApplyClientSideFilterDebounced();
@@ -173,74 +237,9 @@ namespace PatronGamingMonitor.ViewModels
                 {
                     _statusFilterPlay = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(IsPlayingChecked));
                     Logger.Info("PlayingFilter changed → {Status}",
                         value == true ? "Playing" : value == false ? "Not Playing" : "All");
                     ApplyClientSideFilterDebounced();
-                }
-            }
-        }
-
-        public bool IsInUseChecked
-        {
-            get => StatusFilterInUse == true;
-            set
-            {
-                if (value)
-                {
-                    StatusFilterInUse = true;
-                }
-                else if (StatusFilterInUse == true)
-                {
-                    StatusFilterInUse = null;
-                }
-            }
-        }
-
-        public bool IsOverstayedChecked
-        {
-            get => StatusFilterInUse == false;
-            set
-            {
-                if (value)
-                {
-                    StatusFilterInUse = false;
-                }
-                else if (StatusFilterInUse == false)
-                {
-                    StatusFilterInUse = null;
-                }
-            }
-        }
-
-        public bool IsPlayingChecked
-        {
-            get => StatusFilterPlaying == false;
-            set
-            {
-                if (value)
-                {
-                    StatusFilterPlaying = false;
-                }
-                else if (StatusFilterPlaying == false)
-                {
-                    StatusFilterPlaying = null;
-                }
-            }
-        }
-
-        public bool IsUsedChecked
-        {
-            get => StatusFilterInUse == false;
-            set
-            {
-                if (value)
-                {
-                    StatusFilterInUse = false;
-                }
-                else if (StatusFilterInUse == false)
-                {
-                    StatusFilterInUse = null;
                 }
             }
         }
@@ -610,32 +609,35 @@ namespace PatronGamingMonitor.ViewModels
                         );
                     }
 
-                    // Filter by RemainingTime
-                    if (FilterType == "<30")
+                    // Filter by FilterType (All Players hoặc Alerted Players)
+                    if (FilterType == "<30") // Alerted Players
                     {
-                        filteredList = filteredList.Where(t => t.RemainingTime <= 1800);
+                        // Alerted Players: Playing > 720 (12 hours)
+                        filteredList = filteredList.Where(t => t.PlayingTime > 720);
                     }
-                    else if (FilterType.Equals("Overstayed", StringComparison.OrdinalIgnoreCase))
-                    {
-                        filteredList = filteredList.Where(t => t.RemainingTime <= 0);
-                    }
+                    // Nếu FilterType == "All" thì không filter, lấy tất cả
 
-                    // Filter by UsedStatus
-                    if (StatusFilterInUse.HasValue)
+                    // Filter by Playing Time checkboxes
+                    if (Filter12Hours || Filter24Hours || Filter48Hours)
                     {
-                        var targetStatus = StatusFilterInUse.Value ? "inuse" : "overstayed";
                         filteredList = filteredList.Where(t =>
-                            t.UsedStatus?.Equals(targetStatus, StringComparison.OrdinalIgnoreCase) == true);
-                    }
-
-                    // Filter by PlayingStatus
-                    if (StatusFilterPlaying.HasValue)
-                    {
-                        var targetPlaying = StatusFilterPlaying.Value ? "" : "not playing";
-                        if (targetPlaying == "not playing")
                         {
-                            filteredList = filteredList.Where(t => t.Type?.ToLower() != targetPlaying);
-                        }
+                            bool match = false;
+
+                            // 12H: 720-1439 phút (12-23.99 giờ)
+                            if (Filter12Hours && t.PlayingTime >= 720 && t.PlayingTime < 1440)
+                                match = true;
+
+                            // 24H: 1440-2879 phút (24-47.99 giờ)
+                            if (Filter24Hours && t.PlayingTime >= 1440 && t.PlayingTime < 2880)
+                                match = true;
+
+                            // 48H: >= 2880 phút (>= 48 giờ)
+                            if (Filter48Hours && t.PlayingTime >= 2880)
+                                match = true;
+
+                            return match;
+                        });
                     }
 
                     var filtered = filteredList.ToList();
@@ -651,10 +653,6 @@ namespace PatronGamingMonitor.ViewModels
                         {
                             filtered = filtered.OrderByDescending(t => GetPropertyValue(t, _currentSortColumn)).ToList();
                         }
-
-                        var sample = string.Join(", ", filtered.Take(3).Select(t => GetPropertyValue(t, _currentSortColumn)));
-                        //Logger.Info("✅ Sorted {Count} records by {Column} {Direction}. First 3: [{Sample}]",
-                        //    filtered.Count, _currentSortColumn, _currentSortDirection, sample);
                     }
 
                     // Save filtered and sorted cache
@@ -678,13 +676,6 @@ namespace PatronGamingMonitor.ViewModels
                         }
 
                         UpdatePagedView();
-
-                        //var statusText = StatusFilterInUse == true ? "InUse"
-                        //    : StatusFilterInUse == false ? "Overstayed" : "All";
-
-                        //Logger.Info("📄 Filtered & Sorted complete | Page {Page}/{TotalPages} | Total: {Total} | Filter: {FilterType} | Status: {Status} | Search: {Search} | Sort: {Sort} {Direction}",
-                        //    PageIndex, TotalPages, TotalCount, FilterType, statusText, SearchText ?? "(none)",
-                        //    _currentSortColumn ?? "(none)", _currentSortDirection);
                     });
                 });
             }
