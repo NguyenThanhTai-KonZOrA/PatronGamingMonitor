@@ -1,41 +1,41 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="clr-namespace:PatronGamingMonitor.Helpers">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:helpers="clr-namespace:PatronGamingMonitor.Helpers">
 
 	<!-- NUCLEAR OPTION: Force remove all text decorations -->
 	<Style TargetType="TextBlock">
-		<Setter Property="TextDecorations" Value="{x:Null}"/>
-		<Setter Property="helpers:TextBlockHelper.RemoveUnderline" Value="True"/>
+		<Setter Property="TextDecorations" Value="{x:Null}" />
+		<Setter Property="helpers:TextBlockHelper.RemoveUnderline" Value="True" />
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="True">
-				<Setter Property="TextDecorations" Value="{x:Null}"/>
+				<Setter Property="TextDecorations" Value="{x:Null}" />
 			</Trigger>
 		</Style.Triggers>
 	</Style>
 
 	<!-- Remove underline from TextBlock in DataGridCell template -->
 	<Style TargetType="TextBlock" x:Key="DataGridTextBlockStyle">
-		<Setter Property="TextDecorations" Value="{x:Null}"/>
+		<Setter Property="TextDecorations" Value="{x:Null}" />
 	</Style>
 
 	<Style TargetType="DataGrid">
-		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 	</Style>
 
 	<Style TargetType="DataGridCell">
-		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-		<Setter Property="BorderThickness" Value="0"/>
-		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="Transparent" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="DataGridCell">
 					<Border Background="{TemplateBinding Background}"
-                            BorderThickness="0"
-                            Padding="{TemplateBinding Padding}">
+						BorderThickness="0"
+						Padding="{TemplateBinding Padding}">
 						<ContentPresenter>
 							<ContentPresenter.Resources>
 								<Style TargetType="TextBlock">
-									<Setter Property="TextDecorations" Value="{x:Null}"/>
+									<Setter Property="TextDecorations" Value="{x:Null}" />
 								</Style>
 							</ContentPresenter.Resources>
 						</ContentPresenter>
@@ -46,11 +46,11 @@
 	</Style>
 
 	<Style TargetType="DataGridRow">
-		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 	</Style>
 
 	<Style TargetType="Hyperlink">
-		<Setter Property="TextDecorations" Value="{x:Null}"/>
+		<Setter Property="TextDecorations" Value="{x:Null}" />
 	</Style>
 
 </ResourceDictionary>

@@ -20,7 +20,8 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
-            <i:InvokeCommandAction Command="{Binding MouseMoveWindowCommand}" CommandParameter="{Binding ElementName=ucControlBarChildWindow}" />
+            <i:InvokeCommandAction Command="{Binding MouseMoveWindowCommand}"
+                CommandParameter="{Binding ElementName=ucControlBarChildWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -43,8 +44,10 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="0">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="Black" BorderThickness="0">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                VerticalAlignment="Center" />
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -80,7 +83,7 @@
                                     <Setter Property="Kind" Value="WindowMaximize" />
                                     <Style.Triggers>
                                         <DataTrigger Value="Maximized"
-                                                     Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}">
+                                            Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}">
                                             <Setter Property="Kind" Value="WindowRestore" />
                                         </DataTrigger>
                                     </Style.Triggers>
