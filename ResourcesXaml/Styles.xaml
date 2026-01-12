@@ -110,7 +110,6 @@
     <!-- DataGrid Cell Style -->
     <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>

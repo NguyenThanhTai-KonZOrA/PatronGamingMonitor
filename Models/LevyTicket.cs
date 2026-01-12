@@ -119,7 +119,7 @@ namespace PatronGamingMonitor.Models
                 if (PlayingTime >= 720)
                     return new SolidColorBrush(Color.FromRgb(245, 241, 137));
                 // #C8F5D2 - Light green
-                return new SolidColorBrush(Color.FromRgb(150, 200, 250));
+                return new SolidColorBrush(Color.FromRgb(165, 210, 255));
             }
         }
 
