@@ -27,7 +27,12 @@
                 <!-- Application Resources -->
                 <ResourceDictionary Source="ResourcesXaml/MainResource.xaml" />
                 <ResourceDictionary Source="ResourcesXaml/Styles.xaml" />
+
+                <!-- Global Overrides - MUST BE LAST to override MaterialDesign -->
+                <ResourceDictionary Source="ResourcesXaml/GlobalOverrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>

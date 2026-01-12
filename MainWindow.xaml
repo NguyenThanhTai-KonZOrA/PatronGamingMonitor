@@ -13,7 +13,7 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Icon="pack://application:,,,/Assets/Images/LEVYTICKETMONITORlogo.ico"
+        Icon="pack://application:,,,/Assets/Images/PRGAlogo.ico"
         Background="#F5F7FA">
 
     <Window.Resources>
@@ -27,6 +27,10 @@
             <GradientStop Color="#1A3650" Offset="0.5"/>
             <GradientStop Color="#103252" Offset="1"/>
         </LinearGradientBrush>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="TextDecorations" Value="{x:Null}"/>
+        </Style>
     </Window.Resources>
 
     <i:Interaction.Triggers>

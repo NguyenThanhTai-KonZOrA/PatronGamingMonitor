@@ -130,6 +130,7 @@
     <Compile Include="Converters\FilterMatchConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\TicketStatusToBrushConverter.cs" />
+    <Compile Include="Helpers\TextBlockHelper.cs" />
     <Compile Include="Models\CachedPage.cs" />
     <Compile Include="Models\PagedResult.cs" />
     <Compile Include="Supports\ApiClient.cs" />
@@ -157,6 +158,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ResourcesXaml\GlobalOverrides.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResourcesXaml\MainResource.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -231,7 +235,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Images\LEVYTICKETMONITORlogo.ico">
+    <Content Include="Assets\Images\PRGAlogo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

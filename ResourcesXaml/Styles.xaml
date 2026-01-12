@@ -10,6 +10,11 @@
     <SolidColorBrush x:Key="HoverBrush" Color="#E1B7A7"/>
     <SolidColorBrush x:Key="ClickBrush" Color="#D4A595"/>
 
+    <!-- GLOBAL TextBlock Style - Remove all text decorations -->
+    <Style TargetType="TextBlock">
+        <Setter Property="TextDecorations" Value="None"/>
+    </Style>
+
     <!-- DataGrid Column Header Style -->
     <Style x:Key="DataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
@@ -113,9 +118,8 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
-
         <Setter Property="Foreground" Value="#1A1A1A"/>
-
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
@@ -127,6 +131,16 @@
                                         HorizontalAlignment="Center"
                                         TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#1A1A1A"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -139,6 +153,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="#1A3650"/>
+        <Setter Property="TextDecorations" Value="None"/>
     </Style>
 
     <!-- DataGrid Row Style -->
@@ -148,8 +163,7 @@
         <Setter Property="Height" Value="34"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="BorderThickness" Value="0"/>
-
-        <!-- Bind color from StatusColor -->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{Binding StatusColor}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
 
@@ -163,7 +177,7 @@
                             BorderThickness="1"
                             SnapsToDevicePixels="True">
                         <DataGridCellsPresenter Margin="2"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
