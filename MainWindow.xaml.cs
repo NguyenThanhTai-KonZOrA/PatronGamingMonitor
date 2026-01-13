@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PatronGamingMonitor
 {
@@ -49,6 +50,15 @@ namespace PatronGamingMonitor
 
             // Call ViewModel method to sort
             viewModel.SortData(columnName, newDirection);
+        }
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 1)
+            {
+                // Allow dragging the window
+                DragMove();
+            }
         }
     }
 }

@@ -50,6 +50,7 @@
         <Border Grid.Row="0"
             Background="{StaticResource HeaderGradient}"
             Height="85"
+            MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
             Effect="{DynamicResource DropShadowEffect}">
             <Grid Margin="25,0">
                 <Grid.ColumnDefinitions>
@@ -324,8 +325,8 @@
                         Padding="10"
                         BorderThickness="2" Height="64" VerticalAlignment="Top" Margin="0,0,12,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📊 Status:"
-                                FontSize="14"
+                            <TextBlock Text="Status:"
+                                FontSize="17"
                                 FontWeight="Bold"
                                 VerticalAlignment="Center"
                                 Foreground="#1A3650"
