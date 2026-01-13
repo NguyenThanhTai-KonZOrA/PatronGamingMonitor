@@ -1,4 +1,6 @@
-﻿using PatronGamingMonitor.ViewModels;
+﻿using PatronGamingMonitor.Models;
+using PatronGamingMonitor.ViewModels;
+using PatronGamingMonitor.Views;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,6 +61,21 @@ namespace PatronGamingMonitor
                 // Allow dragging the window
                 DragMove();
             }
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null || dataGrid.SelectedItem == null)
+                return;
+
+            var selectedTicket = dataGrid.SelectedItem as LevyTicket;
+            if (selectedTicket == null || selectedTicket.PlayerID <= 0)
+                return;
+
+            // Open Patron Detail Window
+            var patronWindow = new PatronDetailWindow(selectedTicket.PlayerID);
+            patronWindow.ShowDialog();
         }
     }
 }

@@ -70,7 +70,7 @@
                     </Border>
 
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Patron Gaming Monitor"
+                        <TextBlock Text="Patron Responsible Gaming Alert"
                             FontSize="28"
                             FontWeight="Bold"
                             Foreground="White"
@@ -413,6 +413,7 @@
                             Sorting="DataGrid_Sorting"
                             GridLinesVisibility="Horizontal"
                             HorizontalGridLinesBrush="#F0F0F0"
+                            MouseDoubleClick="DataGrid_MouseDoubleClick"
                             IsReadOnly="True"
                             SelectionMode="Single"
                             SelectionUnit="FullRow"

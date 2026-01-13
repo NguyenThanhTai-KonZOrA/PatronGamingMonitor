@@ -142,14 +142,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\FilterMatchConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\TicketStatusToBrushConverter.cs" />
     <Compile Include="Helpers\TextBlockHelper.cs" />
+    <Compile Include="Models\ApiBaseResponse.cs" />
     <Compile Include="Models\CachedPage.cs" />
     <Compile Include="Models\PagedResult.cs" />
+    <Compile Include="Models\PatronInformation.cs" />
+    <Compile Include="PatronDetailWindow.xaml.cs">
+      <DependentUpon>PatronDetailWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Supports\ApiClient.cs" />
     <Compile Include="Supports\CacheService.cs" />
+    <Compile Include="Supports\PatronService.cs" />
     <Compile Include="Supports\SignalRService.cs" />
     <Compile Include="UserControls\ControlBarChildWindowUC.xaml.cs">
       <DependentUpon>ControlBarChildWindowUC.xaml</DependentUpon>
@@ -161,6 +168,7 @@
     <Compile Include="ViewModels\ControlBarChildWindowViewModel.cs" />
     <Compile Include="ViewModels\ControlBarViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PatronDetailViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -173,6 +181,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PatronDetailWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ResourcesXaml\GlobalOverrides.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

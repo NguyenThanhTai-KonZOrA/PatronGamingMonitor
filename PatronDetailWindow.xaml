@@ -1,0 +1,262 @@
+﻿<Window x:Class="PatronGamingMonitor.Views.PatronDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:PatronGamingMonitor.UserControls"
+        mc:Ignorable="d"
+        Title="Patron Information"
+        Height="540"
+        Width="450"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen">
+    <Border Background="#F8F9FA" CornerRadius="10" BorderThickness="1" BorderBrush="#CCCCCC">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title Bar with Drag Support -->
+            <Border Grid.Row="0" 
+                    Background="#1A3650"
+                    Height="60"
+                    CornerRadius="10,10,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                    Effect="{DynamicResource DropShadowEffect}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Title Text -->
+                    <TextBlock Grid.Column="0"
+                               Text="Player Information"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               Margin="20,0"
+                               Effect="{DynamicResource TextShadowEffect}"/>
+
+                    <!-- Control Buttons -->
+                    <StackPanel Grid.Column="1" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Top"
+                                Margin="0,5,5,0">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Width" Value="40"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="3">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#40FFFFFF"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <!-- Minimize Button -->
+                        <!--<Button Content="─" 
+                                ToolTip="Minimize"
+                                Click="MinimizeButton_Click"/>-->
+
+                        <!-- Close Button -->
+                        <!--<Button Content="✕" 
+                                ToolTip="Close"
+                                Click="CloseButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="3">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#E81123"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>-->
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+                <StackPanel>
+                    <!-- Patron Image -->
+                    <Border Background="White" 
+                            CornerRadius="5" 
+                            Padding="10" 
+                            Margin="0,10,0,15"
+                            HorizontalAlignment="Center">
+                        <Image x:Name="PatronImage" 
+                               Width="250" 
+                               Height="150" 
+                               Stretch="UniformToFill"
+                               Source="{Binding PatronImageSource}"/>
+                    </Border>
+
+                    <!-- Information Grid -->
+                    <Grid Margin="40,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Patron ID -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                   Text="Player ID:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.patronID}" 
+                                   FontWeight="Bold" 
+                                   Margin="10,5"/>
+
+                        <!-- Full Name -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" 
+                                   Text="Full Name:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.fullName}" 
+                                   Margin="10,5"
+                                   TextWrapping="Wrap"/>
+
+                        <!-- ID Card -->
+                        <TextBlock Grid.Row="2" Grid.Column="0" 
+                                   Text="ID Card:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.idCard}" 
+                                   Margin="10,5"/>
+
+                        <!-- Address -->
+                        <TextBlock Grid.Row="3" Grid.Column="0" 
+                                   Text="Address:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.address}" 
+                                   Margin="10,5"
+                                   TextWrapping="Wrap"/>
+
+                        <!-- City -->
+                        <TextBlock Grid.Row="4" Grid.Column="0" 
+                                   Text="City:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.city}" 
+                                   Margin="10,5"/>
+
+                        <!-- Age -->
+                        <TextBlock Grid.Row="5" Grid.Column="0" 
+                                   Text="Age:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,5"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" 
+                                   Text="{Binding PatronInfo.age}" 
+                                   Margin="10,5"/>
+                    </Grid>
+
+                    <!-- Close Button -->
+                    <Button Content="Close" 
+                            Width="100" 
+                            Height="35" 
+                            Margin="0,20,0,10"
+                            Background="#1A3650"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="CloseButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="5" 
+                                                    BorderThickness="0">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#005A9E"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Loading Indicator -->
+            <Border Grid.Row="1" 
+                    Background="#80000000" 
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                    CornerRadius="0,0,10,10">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Loading..." 
+                               Foreground="White" 
+                               FontSize="16" 
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
