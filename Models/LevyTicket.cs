@@ -110,13 +110,13 @@ namespace PatronGamingMonitor.Models
             get
             {
                 // #FFE0B2 - Light orange
-                if (PlayingTime >= 2880)
+                if (PlayingTime >= 172800)
                     return new SolidColorBrush(Color.FromRgb(235, 150, 125));
                 // #FFF5C8 - Light yellow
-                if (PlayingTime >= 1440)
+                if (PlayingTime >= 86400)
                     return new SolidColorBrush(Color.FromRgb(255, 200, 200));
                 // #E6F5C8 - Light lime
-                if (PlayingTime >= 720)
+                if (PlayingTime >= 43200)
                     return new SolidColorBrush(Color.FromRgb(245, 241, 137));
                 // #C8F5D2 - Light green
                 return new SolidColorBrush(Color.FromRgb(165, 210, 255));

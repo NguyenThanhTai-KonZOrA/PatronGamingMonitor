@@ -188,6 +188,7 @@
                             Margin="0,0,20,0" />
 
                         <Button Content="All Players"
+                            FontSize="15"
                             Width="120" Height="40"
                             Margin="0,0,12,0"
                             Command="{Binding ApplyFilterCommand}"
@@ -195,6 +196,7 @@
                             Style="{StaticResource FilterButtonStyle}" />
 
                         <Button Content="Alerted Players"
+                            FontSize="15"
                             Width="130" Height="40"
                             Margin="0,0,12,0"
                             Command="{Binding ApplyFilterCommand}"
@@ -375,7 +377,14 @@
                         Margin="0,0,0,12">
                         <Grid>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <Run Text="📊 Total Records: " FontWeight="Bold"
+                                <Border CornerRadius="10"
+                                    Margin="0,0,0,0"
+                                    Effect="{DynamicResource DropShadowEffect}">
+                                    <Image Source="/Assets/Images/PRGAlogo.ico"
+                                        Height="10"
+                                        Width="40" />
+                                </Border>
+                                <Run Text="Total Records: " FontWeight="Bold"
                                     Foreground="#1A3650" FontSize="14" />
                                 <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="Bold"
                                     Foreground="#E74C3C" FontSize="17" />
@@ -425,7 +434,7 @@
                                 <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}"
                                     Width="2*" SortMemberPath="FullName" />
                                 <DataGridTextColumn Header="Area" Binding="{Binding Area}"
-                                    Width="2*" SortMemberPath="Area" />
+                                    Width="*" SortMemberPath="Area" />
                                 <DataGridTextColumn Header="Location" Binding="{Binding Location}"
                                     Width="*" SortMemberPath="Location" />
                                 <DataGridTextColumn Header="Seat" Binding="{Binding Seat}" Width="*"

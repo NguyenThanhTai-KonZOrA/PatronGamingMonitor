@@ -5,7 +5,7 @@ namespace PatronGamingMonitor.Models
 {
     public class PagedResult<T>
     {
-        [JsonProperty("tickets")]
+        [JsonProperty("data")]
         public List<T> Items { get; set; } = new List<T>();
 
         [JsonProperty("totalCount")]

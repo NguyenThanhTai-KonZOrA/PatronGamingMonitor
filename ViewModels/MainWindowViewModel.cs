@@ -612,8 +612,8 @@ namespace PatronGamingMonitor.ViewModels
                     // Filter by FilterType (All Players hoặc Alerted Players)
                     if (FilterType == "<30") // Alerted Players
                     {
-                        // Alerted Players: Playing > 720 (12 hours)
-                        filteredList = filteredList.Where(t => t.PlayingTime > 720);
+                        // Alerted Players: Playing > 43200 (12 hours)
+                        filteredList = filteredList.Where(t => t.PlayingTime > 43200);
                     }
                     // Nếu FilterType == "All" thì không filter, lấy tất cả
 
@@ -625,15 +625,15 @@ namespace PatronGamingMonitor.ViewModels
                             bool match = false;
 
                             // 12H: 720-1439 phút (12-23.99 giờ)
-                            if (Filter12Hours && t.PlayingTime >= 720 && t.PlayingTime < 1440)
+                            if (Filter12Hours && t.PlayingTime >= 43200 && t.PlayingTime < 86400)
                                 match = true;
 
                             // 24H: 1440-2879 phút (24-47.99 giờ)
-                            if (Filter24Hours && t.PlayingTime >= 1440 && t.PlayingTime < 2880)
+                            if (Filter24Hours && t.PlayingTime >= 86400 && t.PlayingTime < 172800)
                                 match = true;
 
                             // 48H: >= 2880 phút (>= 48 giờ)
-                            if (Filter48Hours && t.PlayingTime >= 2880)
+                            if (Filter48Hours && t.PlayingTime >= 172800)
                                 match = true;
 
                             return match;

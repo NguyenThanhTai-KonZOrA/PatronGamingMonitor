@@ -55,7 +55,7 @@ namespace PatronGamingMonitor.Supports
         {
             try
             {
-                var useTestData = ConfigurationManager.AppSettings["UseTestData"];
+               var useTestData = ConfigurationManager.AppSettings["UseTestData"];
                 if (useTestData?.ToLower() == "true")
                 {
                     Logger.Info("Using TEST DATA from JSON file");
