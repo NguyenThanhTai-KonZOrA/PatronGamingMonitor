@@ -24,6 +24,8 @@ namespace PatronGamingMonitor.Models
         public string LevyType { get; set; }
         public string UsedStatus { get; set; }
         public string Area { get; set; }
+        public string LocalStatus { get; set; }
+
 
         public int RemainingTime
         {

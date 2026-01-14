@@ -89,6 +89,20 @@ namespace PatronGamingMonitor.ViewModels
             }
         }
 
+        private int _totalTable;
+        public int TotalTable
+        {
+            get => _totalTable;
+            set { _totalTable = value; OnPropertyChanged(); }
+        }
+
+        private int _totalSlot;
+        public int TotalSlot
+        {
+            get => _totalSlot;
+            set { _totalSlot = value; OnPropertyChanged(); }
+        }
+
         private int _totalPages;
         public int TotalPages
         {
@@ -636,8 +650,8 @@ namespace PatronGamingMonitor.ViewModels
                             (t.FullName?.ToLowerInvariant().Contains(searchLower) == true) ||
                             (t.Location?.ToLowerInvariant().Contains(searchLower) == true) ||
                             (t.Type?.ToLowerInvariant().Contains(searchLower) == true) ||
-                            (t.LevyType?.ToLowerInvariant().Contains(searchLower) == true) ||
-                            (t.TransactionNo?.ToLowerInvariant().Contains(searchLower) == true) ||
+                            (t.Area?.ToLowerInvariant().Contains(searchLower) == true) ||
+                            (t.LocalStatus?.ToLowerInvariant().Contains(searchLower) == true) ||
                             (t.PitName?.ToLowerInvariant().Contains(searchLower) == true)
                         );
                     }
@@ -674,6 +688,8 @@ namespace PatronGamingMonitor.ViewModels
                     }
 
                     var filtered = filteredList.ToList();
+                    TotalSlot = filtered.Count(t => t.Type.Equals("Slot", StringComparison.OrdinalIgnoreCase));
+                    TotalTable = filtered.Count(t => t.Type.Equals("Table", StringComparison.OrdinalIgnoreCase));
 
                     // APPLY SORTING
                     if (!string.IsNullOrEmpty(_currentSortColumn))

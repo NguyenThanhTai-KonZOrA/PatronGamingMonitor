@@ -339,26 +339,26 @@ Margin="0,4,0,0">
                         Padding="10"
                         BorderThickness="2" Height="64" VerticalAlignment="Top" Margin="0,0,12,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Status:"
+                            <TextBlock Text="Playing time:"
                                 FontSize="17"
                                 FontWeight="Bold"
                                 VerticalAlignment="Center"
                                 Foreground="#1A3650"
                                 Margin="0,0,15,0" />
 
-                            <CheckBox Content="12H"
+                            <CheckBox Content="> 12H"
                                 IsChecked="{Binding IsFilter12HoursChecked}"
                                 Style="{StaticResource StatusCheckBoxStyle}"
                                 Width="100" Height="40"
                                 Margin="0,0,8,0" />
 
-                            <CheckBox Content="24H"
+                            <CheckBox Content="> 24H"
                                 IsChecked="{Binding IsFilter24HoursChecked}"
                                 Style="{StaticResource StatusCheckBoxStyle}"
                                 Width="100" Height="40"
                                 Margin="0,0,8,0" />
 
-                            <CheckBox Content="48H"
+                            <CheckBox Content="> 48H"
                                 IsChecked="{Binding IsFilter48HoursChecked}"
                                 Style="{StaticResource StatusCheckBoxStyle}"
                                 Width="100" Height="40" />
@@ -389,25 +389,19 @@ Margin="0,4,0,0">
                         Margin="0,0,0,12">
                         <Grid>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <Border CornerRadius="10"
-                                    Margin="0,0,0,0"
-                                    Effect="{DynamicResource DropShadowEffect}">
-                                    <Image Source="/Assets/Images/PRGAlogo.ico"
-                                        Height="10"
-                                        Width="40" />
-                                </Border>
-                                <Run Text="Total Records: " FontWeight="Bold"
+                                <Run Text="Total: " FontWeight="Bold"
                                     Foreground="#1A3650" FontSize="14" />
                                 <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="Bold"
                                     Foreground="#E74C3C" FontSize="17" />
                             </TextBlock>
 
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <Run Text="📄 Page " Foreground="#7F8C8D" FontSize="13" />
-                                <Run Text="{Binding PageIndex, Mode=OneWay}" FontWeight="Bold"
+                                <Run Text="Table: " Foreground="#1A3650" FontSize="15" />
+                                <Run Text="{Binding TotalTable, Mode=OneWay}" FontWeight="Bold"
                                     Foreground="#1A3650" FontSize="15" />
-                                <Run Text=" of " Foreground="#7F8C8D" FontSize="13" />
-                                <Run Text="{Binding TotalPages, Mode=OneWay}" FontWeight="Bold"
+                                <Run Text=" / " Foreground="#1A3650" FontSize="13" />
+                                <Run Text="Slot: " Foreground="#1A3650" FontSize="15" />
+                                <Run Text="{Binding TotalSlot, Mode=OneWay}" FontWeight="Bold"
                                     Foreground="#1A3650" FontSize="15" />
                             </TextBlock>
                         </Grid>
@@ -458,6 +452,8 @@ Margin="0,4,0,0">
                                     Width="*" SortMemberPath="PitName" />
                                 <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"
                                     SortMemberPath="Type" />
+                                <DataGridTextColumn Header="Local Status" Binding="{Binding LocalStatus}" Width="*"
+                                    SortMemberPath="LocalStatus" />
                                 <DataGridTextColumn Header="Playing Time"
                                     Binding="{Binding FormattedPlayingTime}"
                                     Width="1.2*"

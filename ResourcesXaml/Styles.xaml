@@ -119,6 +119,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="#1A1A1A"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ToolTip" Value="{Binding Path=RowDetailsToolTipProperty}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
@@ -145,6 +146,15 @@
         </Setter>
     </Style>
 
+    <Style TargetType="ToolTip">
+        <Setter Property = "HorizontalOffset" Value="1"/>
+        <Setter Property = "VerticalOffset" Value="1"/>
+        <Setter Property = "Background" Value="LightBlue"/>
+        <Setter Property = "Foreground" Value="Purple"/>
+        <Setter Property = "FontSize" Value="14"/>
+        <Setter Property = "FontWeight" Value="Bold"/>
+        <Setter Property = "HasDropShadow" Value="False"/>
+    </Style>
     <!-- Countdown Column Highlight -->
     <Style x:Key="CountdownCellStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -165,6 +175,30 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{Binding StatusColor}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
+
+        <!-- ✅ Add ToolTip to each row -->
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Background="#1A3650" 
+                         BorderBrush="#E1B7A7" 
+                         BorderThickness="2"
+                         Padding="12,8"
+                         HasDropShadow="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="👆 " 
+                                   FontSize="14" 
+                                   Foreground="#E1B7A7"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="Double-click to view profile" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -189,7 +223,7 @@
             </Trigger>
 
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#E1B7A7"/>
+                <Setter Property="Background" Value="#337abd"/>
                 <Setter Property="BorderBrush" Value="#1A3650"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
