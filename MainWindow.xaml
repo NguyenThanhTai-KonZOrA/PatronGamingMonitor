@@ -82,10 +82,22 @@
                             Margin="0,3,0,0" />
 
                         <TextBlock Text="{Binding CurrentVersion}"
-                            FontSize="13"
-                            FontWeight="Bold"
-                            Foreground="White"
-                            Effect="{DynamicResource TextShadowEffect}" />
+FontSize="13"
+FontWeight="SemiBold"
+Foreground="White"
+Margin="0,4,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <!-- Show loading animation -->
+                                        <DataTrigger Binding="{Binding CurrentVersion}" Value="Version: Loading...">
+                                            <Setter Property="Foreground" Value="#E1B7A7"/>
+                                            <Setter Property="FontStyle" Value="Italic"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </StackPanel>
 
                 </StackPanel>

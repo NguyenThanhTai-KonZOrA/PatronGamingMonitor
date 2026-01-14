@@ -149,6 +149,7 @@
     <Compile Include="Helpers\TextBlockHelper.cs" />
     <Compile Include="Models\ApiBaseResponse.cs" />
     <Compile Include="Models\CachedPage.cs" />
+    <Compile Include="Models\ManifestApplicationResponse.cs" />
     <Compile Include="Models\PagedResult.cs" />
     <Compile Include="Models\PatronInformation.cs" />
     <Compile Include="PatronDetailWindow.xaml.cs">

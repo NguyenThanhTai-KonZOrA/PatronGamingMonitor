@@ -281,7 +281,7 @@ namespace PatronGamingMonitor.ViewModels
                     return;
                 }
 
-                CurrentVersion = $"Version: {ConfigurationManager.AppSettings["ApplicationVersion"]}";
+                CurrentVersion = "Version: Loading...";
 
                 InitializeCommands();
                 InitializeFilterDebounce();
@@ -296,6 +296,7 @@ namespace PatronGamingMonitor.ViewModels
                     _cacheExpirySeconds = 30;
 
                 //InitializeSignalR();
+                _ = LoadVersionAsync();
                 InitializeClockTimer();
                 InitializeAutoRefreshTimer();
 
@@ -519,6 +520,38 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Data Loading Methods
+        private async Task LoadVersionAsync()
+        {
+            try
+            {
+                Logger.Info("Loading ClientLauncher version from API...");
+
+                var versionResponse = await _apiClient.GetApplicationByCodeAsync("PatronGamingMonitor");
+
+                if (versionResponse != null && !string.IsNullOrEmpty(versionResponse.Version))
+                {
+                    CurrentVersion = $"Version: {versionResponse.Version}";
+                    Logger.Info("Loaded version: {Version}", versionResponse.Version);
+                }
+                else
+                {
+                    // Fallback to config if API returns null/empty
+                    string configVersion = ConfigurationManager.AppSettings["ApplicationVersion"] ?? "1.1.0";
+                    CurrentVersion = $"Version: {configVersion}";
+                    Logger.Warn("API returned null/empty version, using config: {Version}", configVersion);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to load version from API");
+
+                // Fallback to App.config if API call failed
+                string configVersion = ConfigurationManager.AppSettings["ApplicationVersion"] ?? "1.1.0";
+                CurrentVersion = $"Version: {configVersion}";
+                Logger.Warn("Using fallback version: {Version}", configVersion);
+            }
+        }
+
 
         private async Task LoadTicketsFromApiAsync()
         {

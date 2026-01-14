@@ -120,7 +120,7 @@
             </Border>
 
             <!-- Content -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="5">
                 <StackPanel>
                     <!-- Patron Image -->
                     <Border Background="White" 
@@ -136,9 +136,9 @@
                     </Border>
 
                     <!-- Information Grid -->
-                    <Grid Margin="40,0">
+                    <Grid Margin="85,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -152,60 +152,60 @@
 
                         <!-- Patron ID -->
                         <TextBlock Grid.Row="0" Grid.Column="0" 
-                                   Text="Player ID:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="Player ID:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.patronID}" 
-                                   FontWeight="Bold" 
-                                   Margin="10,5"/>
+               Text="{Binding PatronInfo.patronID}" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
 
                         <!-- Full Name -->
                         <TextBlock Grid.Row="1" Grid.Column="0" 
-                                   Text="Full Name:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="Full Name:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.fullName}" 
-                                   Margin="10,5"
-                                   TextWrapping="Wrap"/>
+               Text="{Binding PatronInfo.fullName}" 
+               Margin="0,5"
+               TextWrapping="Wrap"/>
 
                         <!-- ID Card -->
                         <TextBlock Grid.Row="2" Grid.Column="0" 
-                                   Text="ID Card:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="ID Card:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.idCard}" 
-                                   Margin="10,5"/>
+               Text="{Binding PatronInfo.idCard}" 
+               Margin="0,5"/>
 
                         <!-- Address -->
                         <TextBlock Grid.Row="3" Grid.Column="0" 
-                                   Text="Address:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="Address:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="3" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.address}" 
-                                   Margin="10,5"
-                                   TextWrapping="Wrap"/>
+               Text="{Binding PatronInfo.address}" 
+               Margin="0,5"
+               TextWrapping="Wrap"/>
 
                         <!-- City -->
                         <TextBlock Grid.Row="4" Grid.Column="0" 
-                                   Text="City:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="City:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="4" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.city}" 
-                                   Margin="10,5"/>
+               Text="{Binding PatronInfo.city}" 
+               Margin="0,5"/>
 
                         <!-- Age -->
                         <TextBlock Grid.Row="5" Grid.Column="0" 
-                                   Text="Age:" 
-                                   FontWeight="Bold" 
-                                   Margin="0,5"/>
+               Text="Age:" 
+               FontWeight="Bold" 
+               Margin="0,5"/>
                         <TextBlock Grid.Row="5" Grid.Column="1" 
-                                   Text="{Binding PatronInfo.age}" 
-                                   Margin="10,5"/>
+               Text="{Binding PatronInfo.age}" 
+               Margin="0,5"/>
                     </Grid>
 
                     <!-- Close Button -->

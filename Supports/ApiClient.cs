@@ -16,6 +16,7 @@ namespace PatronGamingMonitor.Supports
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly HttpClient _httpClient;
         private readonly string _levyBaseUrl;
+        private readonly string _deploymentBaseUrl;
         private bool _disposed = false;
 
         public ApiClient()
@@ -26,6 +27,9 @@ namespace PatronGamingMonitor.Supports
                 {
                     Timeout = TimeSpan.FromSeconds(30)
                 };
+
+                _deploymentBaseUrl = ConfigurationManager.AppSettings["DeploymentBaseUrl"]
+                    ?? throw new InvalidOperationException("DeploymentBaseUrl is missing in app.config.");
 
                 _levyBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]
                     ?? throw new InvalidOperationException("LevyBaseUrl is missing in app.config.");
@@ -47,6 +51,29 @@ namespace PatronGamingMonitor.Supports
             }
         }
 
+        public async Task<ManifestApplicationResponse?> GetApplicationByCodeAsync(string appCode)
+        {
+            try
+            {
+                // Logger.Info("Fetching application {AppCode} from API", appCode);
+                var app = await GetApiDataAsync<ManifestApplicationResponse>($"{_deploymentBaseUrl}/api/ApplicationManagement/manifest/latest/{appCode}");
+                if (app != null)
+                {
+                    // Logger.Info("Successfully fetched manifest for application {AppCode}", appCode);
+                }
+                else
+                {
+                    // Logger.Warn("Application {AppCode} not found in API", appCode);
+                }
+                return app;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to fetch application {AppCode} from API", appCode);
+                throw new Exception($"Failed to fetch application {appCode}: {ex.Message}", ex);
+            }
+        }
+
         public async Task<PagedResult<LevyTicket>> GetLevyTicketsPagedAsync(
             int pageIndex = 1,
             int pageSize = 50,
@@ -55,7 +82,7 @@ namespace PatronGamingMonitor.Supports
         {
             try
             {
-               var useTestData = ConfigurationManager.AppSettings["UseTestData"];
+                var useTestData = ConfigurationManager.AppSettings["UseTestData"];
                 if (useTestData?.ToLower() == "true")
                 {
                     Logger.Info("Using TEST DATA from JSON file");
@@ -117,6 +144,27 @@ namespace PatronGamingMonitor.Supports
                 };
             }
         }
+
+        private async Task<T> GetApiDataAsync<T>(string endpoint)
+        {
+            //Logger.Debug("Calling API endpoint: {Endpoint}", endpoint);
+
+            var response = await _httpClient.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var apiResponse = JsonConvert.DeserializeObject<ApiBaseResponse<T>>(json);
+
+            if (apiResponse?.Success == true)
+            {
+                //Logger.Debug("API call successful for endpoint: {Endpoint}", endpoint);
+                return apiResponse.Data;
+            }
+
+            // Logger.Warn("API call returned unsuccessful response for endpoint: {Endpoint}", endpoint);
+            return default;
+        }
+
 
         private async Task<PagedResult<LevyTicket>> LoadTestDataFromFileAsync(
             int pageIndex,
