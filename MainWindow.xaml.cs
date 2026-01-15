@@ -89,18 +89,6 @@ namespace PatronGamingMonitor
                 // Fetch patron information from API
                 patronInfo = await _patronService.GetPatronInformationAsync(selectedTicket.PlayerID);
 
-                if (patronInfo != null)
-                {
-                    if (patronInfo.gender == "F")
-                    {
-                        patronInfo.gender = "Female";
-                    }
-                    else
-                    {
-                        patronInfo.gender = "Male";
-                    }
-                }
-
                 if (patronInfo == null)
                 {
                     MessageBox.Show(
@@ -132,6 +120,24 @@ namespace PatronGamingMonitor
                 var patronWindow = new PatronDetailWindow(patronInfo);
                 patronWindow.ShowDialog();
             }
+        }
+
+        private void TableFilter_Click(object sender, MouseButtonEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel == null) return;
+
+            // Apply filter by Type = "Table"
+            viewModel.ApplyTypeFilterCommand?.Execute("Table");
+        }
+
+        private void SlotFilter_Click(object sender, MouseButtonEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel == null) return;
+
+            // Apply filter by Type = "Slot"
+            viewModel.ApplyTypeFilterCommand?.Execute("Slot");
         }
 
         protected override void OnClosed(System.EventArgs e)

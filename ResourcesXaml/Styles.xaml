@@ -223,10 +223,9 @@
             </Trigger>
 
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#337abd"/>
                 <Setter Property="BorderBrush" Value="#1A3650"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="BorderThickness" Value="10"/>
+                <Setter Property="FontWeight" Value="Bold"/>
             </Trigger>
         </Style.Triggers>
     </Style>

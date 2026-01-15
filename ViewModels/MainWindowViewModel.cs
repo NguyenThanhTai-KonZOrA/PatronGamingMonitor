@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -306,6 +307,7 @@ namespace PatronGamingMonitor.ViewModels
         public ICommand ApplyFilterCommand { get; private set; }
         public ICommand ClearSearchCommand { get; private set; }
         public ICommand RetryConnectionCommand { get; private set; }
+        public ICommand ApplyTypeFilterCommand { get; private set; }
 
         #endregion
 
@@ -600,6 +602,21 @@ namespace PatronGamingMonitor.ViewModels
             _filterDebounceTimer.Start();
         }
 
+        private string _typeFilter = null;
+        public string TypeFilter
+        {
+            get => _typeFilter;
+            set
+            {
+                if (_typeFilter != value)
+                {
+                    _typeFilter = value;
+                    OnPropertyChanged();
+                    Logger.Info("TypeFilter changed to {TypeFilter}", _typeFilter ?? "All");
+                }
+            }
+        }
+
         private void InitializeCommands()
         {
             LoadTicketsCommand = new RelayCommand<Window>(
@@ -665,6 +682,27 @@ namespace PatronGamingMonitor.ViewModels
                     Logger.Info("🔄 Manual retry connection triggered");
                     _reconnectAttempt = 0;
                     await OnNetworkRestored();
+                });
+
+            // NEW: Type Filter Command (Table/Slot)
+            ApplyTypeFilterCommand = new RelayCommand<string>(
+                p => !IsLoading,
+                type =>
+                {
+                    if (TypeFilter == type)
+                    {
+                        // Toggle off if clicking the same filter
+                        TypeFilter = null;
+                        Logger.Info("🔄 Type filter cleared");
+                    }
+                    else
+                    {
+                        TypeFilter = type;
+                        Logger.Info("🎯 Applying type filter → {Type}", type);
+                    }
+
+                    PageIndex = 1;
+                    ApplyClientSideFilterDebounced();
                 });
         }
 
@@ -776,6 +814,7 @@ namespace PatronGamingMonitor.ViewModels
 
                     var filteredList = allTickets.AsEnumerable();
 
+                    // Free-text Search Filter
                     if (!string.IsNullOrWhiteSpace(SearchText))
                     {
                         var searchLower = SearchText.Trim().ToLowerInvariant();
@@ -790,30 +829,46 @@ namespace PatronGamingMonitor.ViewModels
                         );
                     }
 
-                    if (FilterType == "<30")
+                    // NEW: Filter by Type (Table/Slot)
+                    if (!string.IsNullOrEmpty(TypeFilter))
+                    {
+                        filteredList = filteredList.Where(t =>
+                            t.Type?.Equals(TypeFilter, StringComparison.OrdinalIgnoreCase) == true);
+                    }
+
+                    // Filter by FilterType (All Players hoặc Alerted Players)
+                    if (FilterType == "<30") // Alerted Players
                     {
                         filteredList = filteredList.Where(t => t.PlayingTime > 43200);
                     }
 
+                    // Filter by Playing Time checkboxes
                     if (Filter12Hours || Filter24Hours || Filter48Hours)
                     {
                         filteredList = filteredList.Where(t =>
                         {
                             bool match = false;
+
                             if (Filter12Hours && t.PlayingTime >= 43200 && t.PlayingTime < 86400)
                                 match = true;
+
                             if (Filter24Hours && t.PlayingTime >= 86400 && t.PlayingTime < 172800)
                                 match = true;
+
                             if (Filter48Hours && t.PlayingTime >= 172800)
                                 match = true;
+
                             return match;
                         });
                     }
 
                     var filtered = filteredList.ToList();
+
+                    // Calculate totals from FILTERED list
                     TotalSlot = filtered.Count(t => t.Type.Equals("Slot", StringComparison.OrdinalIgnoreCase));
                     TotalTable = filtered.Count(t => t.Type.Equals("Table", StringComparison.OrdinalIgnoreCase));
 
+                    // APPLY SORTING
                     if (!string.IsNullOrEmpty(_currentSortColumn))
                     {
                         if (_currentSortDirection == ListSortDirection.Ascending)
@@ -826,6 +881,7 @@ namespace PatronGamingMonitor.ViewModels
                         }
                     }
 
+                    // Save filtered and sorted cache
                     _filteredAndSortedCache = filtered;
 
                     var totalCount = filtered.Count;
