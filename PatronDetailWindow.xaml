@@ -180,7 +180,7 @@
                                        Margin="0"/>
 
                                 <!-- Navigation Buttons -->
-                                <Button x:Name="PrevButton"
+                                <!--<Button x:Name="PrevButton"
                                         Content="‹"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
@@ -191,9 +191,9 @@
                                     <Button.Effect>
                                         <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
                                     </Button.Effect>
-                                </Button>
+                                </Button>-->
 
-                                <Button x:Name="NextButton"
+                                <!--<Button x:Name="NextButton"
                                         Content="›"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
@@ -204,7 +204,7 @@
                                     <Button.Effect>
                                         <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
                                     </Button.Effect>
-                                </Button>
+                                </Button>-->
 
                                 <!-- Image Counter -->
                                 <Border Background="#CC1A3650"
@@ -235,9 +235,9 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="ThumbnailBorder"
-                                                Width="70"
-                                                Height="70"
-                                                Margin="6"
+                                                Width="80"
+                                                Height="50"
+                                                Margin="5"
                                                 BorderThickness="3"
                                                 BorderBrush="#CCCCCC"
                                                 CornerRadius="8"
@@ -288,12 +288,12 @@
                                                 <!-- Selected Indicator Overlay -->
                                                 <Border Background="#CC1A3650"
                                                         CornerRadius="0,0,6,0"
-                                                        Padding="4,2"
+                                                        Padding="6,2"
                                                         HorizontalAlignment="Left"
                                                         VerticalAlignment="Top"
                                                         Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="✓" 
-                                                               FontSize="8"
+                                                               FontSize="10"
                                                                FontWeight="Bold"
                                                                Foreground="White"/>
                                                 </Border>
@@ -344,7 +344,6 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" 
                                        Text="Player ID:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" 
                                        Text="{Binding PatronInfo.patronID}" 
@@ -357,7 +356,6 @@
                             <TextBlock Grid.Row="2" Grid.Column="0" 
                                        Text="Full Name:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"/>
                             <TextBlock Grid.Row="2" Grid.Column="1" 
                                        Text="{Binding PatronInfo.fullName}" 
@@ -370,7 +368,6 @@
                             <TextBlock Grid.Row="3" Grid.Column="0" 
                                        Text="ID Card:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"/>
                             <TextBlock Grid.Row="3" Grid.Column="1" 
                                        Text="{Binding PatronInfo.idCard}" 
@@ -381,7 +378,6 @@
                             <TextBlock Grid.Row="4" Grid.Column="0" 
                                        Text="Address:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"
                                        VerticalAlignment="Top"/>
                             <TextBlock Grid.Row="4" Grid.Column="1" 
@@ -394,7 +390,6 @@
                             <TextBlock Grid.Row="5" Grid.Column="0" 
                                        Text="City:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"/>
                             <TextBlock Grid.Row="5" Grid.Column="1" 
                                        Text="{Binding PatronInfo.city}" 
@@ -405,7 +400,6 @@
                             <TextBlock Grid.Row="6" Grid.Column="0" 
                                        Text="Age / Gender:" 
                                        FontWeight="SemiBold" 
-                                       Foreground="#555"
                                        Margin="0,8"/>
                             <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,8">
                                 <TextBlock Text="{Binding PatronInfo.age}" 

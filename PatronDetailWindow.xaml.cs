@@ -159,16 +159,16 @@ namespace PatronGamingMonitor.Views
             UpdateThumbnailSelection();
 
             // Show/hide navigation buttons based on image count
-            if (_images.Count <= 1)
-            {
-                PrevButton.Visibility = Visibility.Collapsed;
-                NextButton.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PrevButton.Visibility = Visibility.Visible;
-                NextButton.Visibility = Visibility.Visible;
-            }
+            //if (_images.Count <= 1)
+            //{
+            //    PrevButton.Visibility = Visibility.Collapsed;
+            //    NextButton.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    PrevButton.Visibility = Visibility.Visible;
+            //    NextButton.Visibility = Visibility.Visible;
+            //}
         }
 
         // Update thumbnail selection

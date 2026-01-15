@@ -65,6 +65,15 @@ namespace PatronGamingMonitor.ViewModels
 
                 if (patron != null)
                 {
+                    if (patron.sex == "F")
+                    {
+                        patron.sex = "Female";
+                    }
+                    else
+                    {
+                        patron.sex = "Male";
+                    }
+
                     PatronInfo = patron;
                     Logger.Info("✅ Patron information loaded successfully");
                 }

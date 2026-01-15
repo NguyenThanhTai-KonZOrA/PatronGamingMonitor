@@ -89,6 +89,18 @@ namespace PatronGamingMonitor
                 // Fetch patron information from API
                 patronInfo = await _patronService.GetPatronInformationAsync(selectedTicket.PlayerID);
 
+                if (patronInfo != null)
+                {
+                    if (patronInfo.sex == "F")
+                    {
+                        patronInfo.sex = "Female";
+                    }
+                    else
+                    {
+                        patronInfo.sex = "Male";
+                    }
+                }
+
                 if (patronInfo == null)
                 {
                     MessageBox.Show(

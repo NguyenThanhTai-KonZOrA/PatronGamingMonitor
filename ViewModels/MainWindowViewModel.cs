@@ -35,7 +35,10 @@ namespace PatronGamingMonitor.ViewModels
         private List<LevyTicket> _filteredAndSortedCache = new List<LevyTicket>();
         private bool _isUpdatingSort = false;
         private int _reconnectAttempt = 0;
-        private const int MAX_RECONNECT_ATTEMPTS = 5;
+        private int MAX_RECONNECT_ATTEMPTS = ConfigurationManager.AppSettings["MaxReconnectAttempts"] != null
+                ? int.Parse(ConfigurationManager.AppSettings["MaxReconnectAttempts"]) : 5;
+        private int RECONNECT_DELAY_MS = ConfigurationManager.AppSettings["ReconnectDelayMilliseconds"] != null
+                ? int.Parse(ConfigurationManager.AppSettings["ReconnectDelayMilliseconds"]) : 10000;
 
         #region Properties
 
@@ -530,7 +533,7 @@ namespace PatronGamingMonitor.ViewModels
                 }
                 else
                 {
-                    await Task.Delay(3000);
+                    await Task.Delay(RECONNECT_DELAY_MS);
                     await OnNetworkRestored();
                 }
             }
@@ -714,6 +717,8 @@ namespace PatronGamingMonitor.ViewModels
                 if (result == null || result.Items == null || !result.Items.Any())
                 {
                     Logger.Warn("⚠️ No tickets returned from API");
+                    // Keep the data from cache to show on the UI
+                    return;
                     _cacheService.ClearCache();
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -721,7 +726,6 @@ namespace PatronGamingMonitor.ViewModels
                     });
                     TotalCount = 0;
                     TotalPages = 0;
-                    return;
                 }
 
                 _cacheService.SetCache(result.Items.ToList());
