@@ -15,10 +15,11 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <!-- Carousel Navigation Button Style -->
         <Style x:Key="CarouselButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="Background" Value="#1A3650"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -220,17 +221,88 @@
                                 </Border>
                             </Grid>
 
-                            <!-- Indicator Dots -->
-                            <StackPanel Grid.Row="2" 
-                                        Orientation="Horizontal" 
-                                        HorizontalAlignment="Center"
-                                        Margin="0,12">
-                                <Ellipse x:Name="Dot1" 
-                                         Style="{StaticResource IndicatorDotStyle}"
-                                         Fill="#1A3650"/>
-                                <Ellipse x:Name="Dot2" 
-                                         Style="{StaticResource IndicatorDotStyle}"/>
-                            </StackPanel>
+                            <!-- Image Thumbnails -->
+                            <ItemsControl x:Name="ThumbnailsContainer"
+                                        Grid.Row="2" 
+                                        Margin="0,12"
+                                        HorizontalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="ThumbnailBorder"
+                                                Width="70"
+                                                Height="70"
+                                                Margin="6"
+                                                BorderThickness="3"
+                                                BorderBrush="#CCCCCC"
+                                                CornerRadius="8"
+                                                Cursor="Hand"
+                                                MouseLeftButtonDown="Thumbnail_Click"
+                                                Tag="{Binding Index}">
+                                            <Border.Effect>
+                                                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2"/>
+                                            </Border.Effect>
+
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <!-- Hover Effect -->
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="#E1B7A7"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.4" Color="#E1B7A7"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+
+                                                        <!-- Selected Effect -->
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="BorderBrush" Value="#1A3650"/>
+                                                            <Setter Property="BorderThickness" Value="4"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.5" Color="#1A3650"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <!-- WRAP all Image and Selected Indicator to one Grid -->
+                                            <Grid>
+                                                <!-- Thumbnail Image -->
+                                                <Image Source="{Binding ImageSource}" 
+                                                       Stretch="UniformToFill"
+                                                       Height="50"
+                                                       Width="100"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"/>
+
+                                                <!-- Selected Indicator Overlay -->
+                                                <Border Background="#CC1A3650"
+                                                        CornerRadius="0,0,6,0"
+                                                        Padding="4,2"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Top"
+                                                        Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Text="✓" 
+                                                               FontSize="8"
+                                                               FontWeight="Bold"
+                                                               Foreground="White"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
                         </Grid>
                     </Border>
 

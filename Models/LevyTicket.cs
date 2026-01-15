@@ -84,7 +84,7 @@ namespace PatronGamingMonitor.Models
             }
         }
 
-        // ✅ UPDATED: Format hiển thị Ngày:Giờ:Phút:Giây
+        // UPDATED: Formatted Playing Time Property
         public string FormattedPlayingTime
         {
             get

@@ -176,7 +176,7 @@
         <Setter Property="Background" Value="{Binding StatusColor}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
 
-        <!-- ✅ Add ToolTip to each row -->
+        <!-- Add ToolTip to each row -->
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip Background="#1A3650" 

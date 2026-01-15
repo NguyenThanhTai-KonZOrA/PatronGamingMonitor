@@ -12,11 +12,13 @@ namespace PatronGamingMonitor
     public partial class MainWindow : Window
     {
         private readonly ApiClient _apiClient;
+        private readonly PatronService _patronService;
 
         public MainWindow()
         {
             InitializeComponent();
             _apiClient = new ApiClient();
+            _patronService = new PatronService();
         }
 
         private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
@@ -85,7 +87,7 @@ namespace PatronGamingMonitor
             try
             {
                 // Fetch patron information from API
-                patronInfo = await _apiClient.GetPatronInformationAsync(selectedTicket.PlayerID);
+                patronInfo = await _patronService.GetPatronInformationAsync(selectedTicket.PlayerID);
 
                 if (patronInfo == null)
                 {
@@ -108,11 +110,11 @@ namespace PatronGamingMonitor
             }
             finally
             {
-                // ✅ CRITICAL: Reset cursor BEFORE opening dialog
+                // CRITICAL: Reset cursor BEFORE opening dialog
                 Mouse.OverrideCursor = null;
             }
 
-            // ✅ Open dialog AFTER cursor is reset
+            // Open dialog AFTER cursor is reset
             if (patronInfo != null)
             {
                 var patronWindow = new PatronDetailWindow(patronInfo);
@@ -124,6 +126,7 @@ namespace PatronGamingMonitor
         {
             base.OnClosed(e);
             _apiClient?.Dispose();
+            _patronService?.Dispose();
         }
     }
 }

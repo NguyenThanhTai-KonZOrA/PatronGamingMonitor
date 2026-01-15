@@ -1,15 +1,17 @@
-﻿using System;
+﻿using PatronGamingMonitor.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using PatronGamingMonitor.Models;
 
 namespace PatronGamingMonitor.Views
 {
-    public partial class PatronDetailWindow : Window
+    public partial class PatronDetailWindow : Window, INotifyPropertyChanged
     {
         private List<BitmapImage> _images;
         private int _currentImageIndex = 0;
@@ -18,13 +20,22 @@ namespace PatronGamingMonitor.Views
         public BitmapImage PatronImageSource { get; set; }
         public bool IsLoading { get; set; }
 
+        // Observable collection for thumbnails
+        public ObservableCollection<ThumbnailItem> Thumbnails { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         public PatronDetailWindow(PatronInformation patronInfo)
         {
             InitializeComponent();
             PatronInfo = patronInfo;
+            Thumbnails = new ObservableCollection<ThumbnailItem>();
             DataContext = this;
 
             LoadImages();
+            LoadThumbnails();
             UpdateCarousel();
         }
 
@@ -32,21 +43,32 @@ namespace PatronGamingMonitor.Views
         {
             _images = new List<BitmapImage>();
 
-            // Load first image (patronImageBase64)
+            // Load first image(patronImageBase64)
             if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
             {
                 _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
             }
+
+            if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
+            {
+                _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
+            }
+
+            //if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
+            //{
+            //    _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
+            //}
+
+            //if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
+            //{
+            //    _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
+            //}
 
             // Load second image (patronPrimaryImageBase64)
             //if (!string.IsNullOrEmpty(PatronInfo.patronPrimaryImageBase64))
             //{
             //    _images.Add(Base64ToImage(PatronInfo.patronPrimaryImageBase64));
             //}
-            if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
-            {
-                _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
-            }
 
             // If no images, add placeholder
             if (_images.Count == 0)
@@ -55,11 +77,34 @@ namespace PatronGamingMonitor.Views
             }
         }
 
+        // Load thumbnails
+        private void LoadThumbnails()
+        {
+            Thumbnails.Clear();
+
+            for (int i = 0; i < _images.Count; i++)
+            {
+                Thumbnails.Add(new ThumbnailItem
+                {
+                    Index = i,
+                    ImageSource = _images[i],
+                    IsSelected = i == 0 // First image is selected by default
+                });
+            }
+
+            ThumbnailsContainer.ItemsSource = Thumbnails;
+        }
+
         private BitmapImage Base64ToImage(string base64String)
         {
             try
             {
-                base64String = base64String.Split(',')[1];
+                // Remove data URI prefix if exists
+                if (base64String.Contains(","))
+                {
+                    base64String = base64String.Split(',')[1];
+                }
+
                 byte[] imageBytes = Convert.FromBase64String(base64String);
                 using (var ms = new MemoryStream(imageBytes))
                 {
@@ -80,14 +125,21 @@ namespace PatronGamingMonitor.Views
 
         private BitmapImage GetPlaceholderImage()
         {
-            // Create a simple placeholder image
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri("pack://application:,,,/Assets/Images/user.png", UriKind.Absolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
-            return bitmap;
+            try
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/Assets/Images/user.png", UriKind.Absolute);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            }
+            catch
+            {
+                // Return null if placeholder also fails
+                return null;
+            }
         }
 
         private void UpdateCarousel()
@@ -103,22 +155,38 @@ namespace PatronGamingMonitor.Views
             // Update title
             ImageTitle.Text = _currentImageIndex == 0 ? "Profile Photo" : "ID Card Photo";
 
-            // Update dots
-            Dot1.Fill = _currentImageIndex == 0
-                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A3650"))
-                : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
-
-            Dot2.Fill = _currentImageIndex == 1
-                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A3650"))
-                : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CCCCCC"));
+            // Update thumbnail selection
+            UpdateThumbnailSelection();
 
             // Show/hide navigation buttons based on image count
             if (_images.Count <= 1)
             {
                 PrevButton.Visibility = Visibility.Collapsed;
                 NextButton.Visibility = Visibility.Collapsed;
-                Dot1.Visibility = Visibility.Collapsed;
-                Dot2.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                PrevButton.Visibility = Visibility.Visible;
+                NextButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        // Update thumbnail selection
+        private void UpdateThumbnailSelection()
+        {
+            for (int i = 0; i < Thumbnails.Count; i++)
+            {
+                Thumbnails[i].IsSelected = (i == _currentImageIndex);
+            }
+        }
+
+        // Handle thumbnail click
+        private void Thumbnail_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Tag is int index)
+            {
+                _currentImageIndex = index;
+                UpdateCarousel();
             }
         }
 
@@ -152,5 +220,28 @@ namespace PatronGamingMonitor.Views
         {
             Close();
         }
+    }
+
+    // Thumbnail Item Model
+    public class ThumbnailItem : INotifyPropertyChanged
+    {
+        private bool _isSelected;
+
+        public int Index { get; set; }
+        public BitmapImage ImageSource { get; set; }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
