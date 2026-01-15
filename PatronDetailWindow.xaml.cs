@@ -44,9 +44,9 @@ namespace PatronGamingMonitor.Views
             _images = new List<BitmapImage>();
 
             // Load first image(patronImageBase64)
-            if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
+            if (!string.IsNullOrEmpty(PatronInfo.patronSecondImageBase64))
             {
-                _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
+                _images.Add(Base64ToImage(PatronInfo.patronSecondImageBase64));
             }
 
             if (!string.IsNullOrEmpty(PatronInfo.patronPrimaryImageBase64))
@@ -54,21 +54,6 @@ namespace PatronGamingMonitor.Views
                 _images.Add(Base64ToImage(PatronInfo.patronPrimaryImageBase64));
             }
 
-            //if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
-            //{
-            //    _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
-            //}
-
-            //if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
-            //{
-            //    _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
-            //}
-
-            // Load second image (patronPrimaryImageBase64)
-            //if (!string.IsNullOrEmpty(PatronInfo.patronPrimaryImageBase64))
-            //{
-            //    _images.Add(Base64ToImage(PatronInfo.patronPrimaryImageBase64));
-            //}
 
             // If no images, add placeholder
             if (_images.Count == 0)

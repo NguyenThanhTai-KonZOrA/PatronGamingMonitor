@@ -1,6 +1,6 @@
-﻿using PatronGamingMonitor.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NLog;
+using PatronGamingMonitor.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -35,7 +35,7 @@ namespace PatronGamingMonitor.Supports
                 _levyBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]
                     ?? throw new InvalidOperationException("LevyBaseUrl is missing in app.config.");
 
-                _patronBaseUrl = ConfigurationManager.AppSettings["PatronBaseUrl"] 
+                _patronBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]
                     ?? throw new InvalidOperationException("PatronBaseUrl is missing in app.config.");
 
                 var apiKey = ConfigurationManager.AppSettings["ApiKey"];
@@ -85,7 +85,7 @@ namespace PatronGamingMonitor.Supports
                 var endpoint = ConfigurationManager.AppSettings["PatronInforEndpoint"]
                                ?? "api/PatronProfile/patron-transaction/patron-profile";
 
-                var url = $"{_patronBaseUrl}{endpoint}?patronId={patronId}";
+                var url = $"{_patronBaseUrl}{endpoint}/{patronId}";
                 Logger.Info("Fetching Patron Information from: {Url}", url);
 
                 var response = await GetApiDataAsync<PatronInformation>(url);

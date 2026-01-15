@@ -368,7 +368,7 @@
                                 FontWeight="SemiBold"
                                 Margin="0,8" />
                             <TextBlock Grid.Row="1" Grid.Column="1"
-                                Text="{Binding PatronInfo.patronID}"
+                                Text="{Binding PatronInfo.playerID}"
                                 FontWeight="Bold"
                                 Foreground="#1A3650"
                                 FontSize="14"
@@ -431,7 +431,7 @@
                                 <TextBlock Text="/"
                                     Foreground="#999"
                                     Margin="0,0,8,0" />
-                                <TextBlock Text="{Binding PatronInfo.sex}"
+                                <TextBlock Text="{Binding PatronInfo.gender}"
                                     Foreground="#1A3650" />
                             </StackPanel>
                         </Grid>

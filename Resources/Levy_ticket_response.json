@@ -21,7 +21,7 @@
       "levyType": "Day",
       "usedStatus": "InUse",
       "area": "VIP",
-      "playingTime": 2880
+      "playingTime": 172800
     },
     {
       "playerID": 1079010,
@@ -69,7 +69,7 @@
       "levyType": "Day",
       "usedStatus": "InUse",
       "area": "VIP",
-      "playingTime": 2880
+      "playingTime": 172800
     },
     {
       "playerID": 1079002,
@@ -245,7 +245,7 @@
       "levyType": "Day",
       "usedStatus": "InUse",
       "area": "VIP",
-      "playingTime": 2880
+      "playingTime": 172800
     },
     {
       "playerID": 1079010,
@@ -293,7 +293,7 @@
       "levyType": "Day",
       "usedStatus": "InUse",
       "area": "VIP",
-      "playingTime": 2880
+      "playingTime": 172800
     },
     {
       "playerID": 1079002,

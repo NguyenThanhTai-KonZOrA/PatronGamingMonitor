@@ -28,8 +28,8 @@ namespace PatronGamingMonitor.Supports
                     Timeout = TimeSpan.FromSeconds(30)
                 };
 
-                _patronBaseUrl = ConfigurationManager.AppSettings["PatronBaseUrl"]
-                    ?? throw new InvalidOperationException("PatronBaseUrl is missing in app.config.");
+                _patronBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]
+                    ?? throw new InvalidOperationException("LevyBaseUrl is missing in app.config.");
 
                 _patronInforEndpoint = ConfigurationManager.AppSettings["PatronInforEndpoint"]
                     ?? throw new InvalidOperationException("PatronInforEndpoint is missing in app.config.");
@@ -130,7 +130,7 @@ namespace PatronGamingMonitor.Supports
 
                 // Call API if not in cache
                 Logger.Info("🔄 Fetching patron {PatronId} from API", patronId);
-                var url = $"{_patronBaseUrl}{_patronInforEndpoint}?patronId={patronId}";
+                var url = $"{_patronBaseUrl}{_patronInforEndpoint}/{patronId}";
 
                 var response = await _httpClient.GetAsync(url);
 
@@ -142,14 +142,14 @@ namespace PatronGamingMonitor.Supports
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                var patron = JsonConvert.DeserializeObject<ApiBaseResponse<PatronInformation>>(json);
+                var patron = JsonConvert.DeserializeObject<PatronInformation>(json);
 
-                if (patron != null && patron.Success)
+                if (patron != null && patron.playerID > 0)
                 {
                     // Save to cache
-                    SaveToCache(patron.Data);
+                    SaveToCache(patron);
                     Logger.Info("✅ Fetched and cached patron {PatronId}", patronId);
-                    return patron.Data;
+                    return patron;
                 }
 
                 return null;
@@ -200,18 +200,18 @@ namespace PatronGamingMonitor.Supports
         {
             try
             {
-                if (patron == null || patron.patronID <= 0)
+                if (patron == null || patron.playerID <= 0)
                     return;
 
-                var filePath = GetCacheFilePath(patron.patronID);
+                var filePath = GetCacheFilePath(patron.playerID);
                 var json = JsonConvert.SerializeObject(patron, Formatting.Indented);
                 File.WriteAllText(filePath, json);
 
-                Logger.Info("💾 Saved patron {PatronId} to cache", patron.patronID);
+                Logger.Info("💾 Saved patron {PatronId} to cache", patron.playerID);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "❌ Error saving patron {PatronId} to cache", patron?.patronID);
+                Logger.Error(ex, "❌ Error saving patron {PatronId} to cache", patron?.playerID);
             }
         }
 

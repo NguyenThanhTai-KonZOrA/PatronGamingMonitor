@@ -65,13 +65,13 @@ namespace PatronGamingMonitor.ViewModels
 
                 if (patron != null)
                 {
-                    if (patron.sex == "F")
+                    if (patron.gender == "F")
                     {
-                        patron.sex = "Female";
+                        patron.gender = "Female";
                     }
                     else
                     {
-                        patron.sex = "Male";
+                        patron.gender = "Male";
                     }
 
                     PatronInfo = patron;
@@ -82,7 +82,7 @@ namespace PatronGamingMonitor.ViewModels
                     Logger.Warn("⚠️ No patron information found for PatronID={PatronId}", _patronId);
                     PatronInfo = new PatronInformation
                     {
-                        patronID = _patronId,
+                        playerID = _patronId,
                         fullName = "No information available"
                     };
                 }
@@ -92,7 +92,7 @@ namespace PatronGamingMonitor.ViewModels
                 Logger.Error(ex, "❌ Error loading patron information");
                 PatronInfo = new PatronInformation
                 {
-                    patronID = _patronId,
+                    playerID = _patronId,
                     fullName = "Error loading information"
                 };
             }
@@ -106,12 +106,12 @@ namespace PatronGamingMonitor.ViewModels
         {
             try
             {
-                if (PatronInfo == null || string.IsNullOrWhiteSpace(PatronInfo.patronImageBase64))
+                if (PatronInfo == null || string.IsNullOrWhiteSpace(PatronInfo.patronSecondImageBase64))
                 {
                     PatronImageSource = null;
                     return;
                 }
-                string base64Data = PatronInfo.patronImageBase64.Split(',')[1];
+                string base64Data = PatronInfo.patronSecondImageBase64.Split(',')[1];
                 var imageBytes = Convert.FromBase64String(base64Data);
                 var image = new BitmapImage();
 

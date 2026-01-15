@@ -5,8 +5,8 @@ namespace PatronGamingMonitor.Models
 {
     public class PatronInformation : INotifyPropertyChanged
     {
-        public int patronID { get; set; }
-        public string patronImageBase64 { get; set; }
+        public int playerID { get; set; }
+        public string patronSecondImageBase64 { get; set; }
         public string patronPrimaryImageBase64 { get; set; }
         public string fullName { get; set; }
         public string birthday { get; set; }
@@ -15,7 +15,7 @@ namespace PatronGamingMonitor.Models
         public string city { get; set; }
         public string country { get; set; }
         public string age { get; set; }
-        public string sex { get; set; }
+        public string gender { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

@@ -459,7 +459,7 @@
                         <Grid>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <Run Text="Total: " FontWeight="Bold"
-                                    Foreground="#1A3650" FontSize="14" />
+                                    Foreground="#1A3650" FontSize="15" />
                                 <Run Text="{Binding TotalCount, Mode=OneWay}" FontWeight="Bold"
                                     Foreground="#E74C3C" FontSize="17" />
                             </TextBlock>

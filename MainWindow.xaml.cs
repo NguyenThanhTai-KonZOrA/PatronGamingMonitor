@@ -91,13 +91,13 @@ namespace PatronGamingMonitor
 
                 if (patronInfo != null)
                 {
-                    if (patronInfo.sex == "F")
+                    if (patronInfo.gender == "F")
                     {
-                        patronInfo.sex = "Female";
+                        patronInfo.gender = "Female";
                     }
                     else
                     {
-                        patronInfo.sex = "Male";
+                        patronInfo.gender = "Male";
                     }
                 }
 

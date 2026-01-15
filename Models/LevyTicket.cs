@@ -96,14 +96,18 @@ namespace PatronGamingMonitor.Models
 
                 if (ts.Days > 0)
                 {
-                    // Format: Day:HH:MM:SS
-                    return $"{sign}{ts.Days} day {ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
+                    // Total hours = days * 24 + hours
+                    int totalHours = ts.Days * 24 + ts.Hours;
+
+                    // Format: HHH:MM:SS
+                    return $"{sign}{totalHours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
                 }
                 else
                 {
                     // Format: HH:MM:SS
                     return $"{sign}{ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
                 }
+
             }
         }
 
