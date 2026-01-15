@@ -1,4 +1,5 @@
 ﻿using PatronGamingMonitor.Models;
+using PatronGamingMonitor.Supports;
 using PatronGamingMonitor.ViewModels;
 using PatronGamingMonitor.Views;
 using System.ComponentModel;
@@ -10,9 +11,12 @@ namespace PatronGamingMonitor
 {
     public partial class MainWindow : Window
     {
+        private readonly ApiClient _apiClient;
+
         public MainWindow()
         {
             InitializeComponent();
+            _apiClient = new ApiClient();
         }
 
         private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
@@ -63,7 +67,7 @@ namespace PatronGamingMonitor
             }
         }
 
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var dataGrid = sender as DataGrid;
             if (dataGrid == null || dataGrid.SelectedItem == null)
@@ -73,9 +77,53 @@ namespace PatronGamingMonitor
             if (selectedTicket == null || selectedTicket.PlayerID <= 0)
                 return;
 
-            // Open Patron Detail Window
-            var patronWindow = new PatronDetailWindow(selectedTicket.PlayerID);
-            patronWindow.ShowDialog();
+            // Show loading indicator
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            PatronInformation patronInfo = null;
+
+            try
+            {
+                // Fetch patron information from API
+                patronInfo = await _apiClient.GetPatronInformationAsync(selectedTicket.PlayerID);
+
+                if (patronInfo == null)
+                {
+                    MessageBox.Show(
+                        $"Could not find information for Player ID: {selectedTicket.PlayerID}",
+                        "Player Not Found",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error loading player information:\n{ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+            finally
+            {
+                // ✅ CRITICAL: Reset cursor BEFORE opening dialog
+                Mouse.OverrideCursor = null;
+            }
+
+            // ✅ Open dialog AFTER cursor is reset
+            if (patronInfo != null)
+            {
+                var patronWindow = new PatronDetailWindow(patronInfo);
+                patronWindow.ShowDialog();
+            }
+        }
+
+        protected override void OnClosed(System.EventArgs e)
+        {
+            base.OnClosed(e);
+            _apiClient?.Dispose();
         }
     }
 }

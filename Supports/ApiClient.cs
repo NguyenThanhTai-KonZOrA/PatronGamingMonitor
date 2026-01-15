@@ -16,6 +16,7 @@ namespace PatronGamingMonitor.Supports
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly HttpClient _httpClient;
         private readonly string _levyBaseUrl;
+        private readonly string _patronBaseUrl;
         private readonly string _deploymentBaseUrl;
         private bool _disposed = false;
 
@@ -33,6 +34,9 @@ namespace PatronGamingMonitor.Supports
 
                 _levyBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]
                     ?? throw new InvalidOperationException("LevyBaseUrl is missing in app.config.");
+
+                _patronBaseUrl = ConfigurationManager.AppSettings["PatronBaseUrl"] 
+                    ?? throw new InvalidOperationException("PatronBaseUrl is missing in app.config.");
 
                 var apiKey = ConfigurationManager.AppSettings["ApiKey"];
                 if (string.IsNullOrWhiteSpace(apiKey))
@@ -74,6 +78,40 @@ namespace PatronGamingMonitor.Supports
             }
         }
 
+        public async Task<PatronInformation> GetPatronInformationAsync(int patronId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var endpoint = ConfigurationManager.AppSettings["PatronInforEndpoint"]
+                               ?? "api/PatronProfile/patron-transaction/patron-profile";
+
+                var url = $"{_patronBaseUrl}{endpoint}?patronId={patronId}";
+                Logger.Info("Fetching Patron Information from: {Url}", url);
+
+                var response = await GetApiDataAsync<PatronInformation>(url);
+
+                if (response != null)
+                {
+                    Logger.Info("Successfully fetched patron information for ID: {PatronId}", patronId);
+                }
+                else
+                {
+                    Logger.Warn("Patron information not found for ID: {PatronId}", patronId);
+                }
+
+                return response;
+            }
+            catch (OperationCanceledException)
+            {
+                Logger.Warn("Request was cancelled for PatronId={PatronId}", patronId);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "GetPatronInformationAsync failed: PatronId={PatronId}", patronId);
+                return null;
+            }
+        }
         public async Task<PagedResult<LevyTicket>> GetLevyTicketsPagedAsync(
             int pageIndex = 1,
             int pageSize = 50,

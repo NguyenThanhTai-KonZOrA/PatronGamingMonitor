@@ -7,6 +7,7 @@ namespace PatronGamingMonitor.Models
     {
         public int patronID { get; set; }
         public string patronImageBase64 { get; set; }
+        public string patronPrimaryImageBase64 { get; set; }
         public string fullName { get; set; }
         public string birthday { get; set; }
         public string idCard { get; set; }

@@ -118,6 +118,7 @@ namespace PatronGamingMonitor.ViewModels
 
                 image.Freeze();
                 PatronImageSource = image;
+                IsLoading = false;
             }
             catch (Exception ex)
             {
