@@ -354,7 +354,6 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Initialization Methods
-
         private static bool IsInDesignMode()
         {
             return (bool)DesignerProperties.IsInDesignModeProperty
@@ -672,7 +671,6 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Data Loading Methods
-
         private async Task LoadVersionAsync()
         {
             try
@@ -914,7 +912,6 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Timer Methods
-
         private void StartCountdownTimer()
         {
             lock (_timerLock)
@@ -983,7 +980,6 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Public Methods for Sorting
-
         public void SortData(string columnName, ListSortDirection direction)
         {
             if (string.IsNullOrEmpty(columnName)) return;
@@ -1006,7 +1002,6 @@ namespace PatronGamingMonitor.ViewModels
         #endregion
 
         #region Dispose
-
         public void Dispose()
         {
             try

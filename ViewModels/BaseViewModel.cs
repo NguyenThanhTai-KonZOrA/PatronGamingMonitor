@@ -49,4 +49,3 @@ namespace PatronGamingMonitor.ViewModels
         }
     }
 }
-

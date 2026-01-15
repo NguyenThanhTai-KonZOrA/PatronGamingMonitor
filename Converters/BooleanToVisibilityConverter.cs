@@ -34,7 +34,7 @@ namespace PatronGamingMonitor.Converters
                 bool result = invert ? !boolValue : boolValue;
                 var visibility = result ? Visibility.Visible : Visibility.Collapsed;
 
-                //Logger.Info($"[Converter] value={boolValue}, invert={invert}, result={result}, visibility={visibility}");
+                // Logger.Info($"[Converter] value={boolValue}, invert={invert}, result={result}, visibility={visibility}");
                 return visibility;
             }
             catch (Exception ex)

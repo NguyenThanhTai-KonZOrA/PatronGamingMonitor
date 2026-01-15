@@ -49,9 +49,9 @@ namespace PatronGamingMonitor.Views
                 _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
             }
 
-            if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))
+            if (!string.IsNullOrEmpty(PatronInfo.patronPrimaryImageBase64))
             {
-                _images.Add(Base64ToImage(PatronInfo.patronImageBase64));
+                _images.Add(Base64ToImage(PatronInfo.patronPrimaryImageBase64));
             }
 
             //if (!string.IsNullOrEmpty(PatronInfo.patronImageBase64))

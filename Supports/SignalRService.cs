@@ -1,6 +1,6 @@
-﻿using PatronGamingMonitor.Models;
-using Microsoft.AspNet.SignalR.Client;
+﻿using Microsoft.AspNet.SignalR.Client;
 using NLog;
+using PatronGamingMonitor.Models;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;

@@ -15,10 +15,10 @@
 
             <viewModel:MainWindowViewModel x:Key="MainWindowVM" />
             <viewModel:ControlBarChildWindowViewModel x:Key="ControlBarChildWindowVM" />
-            
+
             <!-- Add Converters -->
-            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
             <!-- Merged Resource Dictionaries -->
             <ResourceDictionary.MergedDictionaries>
 

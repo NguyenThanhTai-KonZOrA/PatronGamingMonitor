@@ -6,7 +6,7 @@ namespace PatronGamingMonitor.Models
     public sealed class CachedPage
     {
         public List<LevyTicket> Items { get; set; } = new List<LevyTicket>();
-        public int TotalCount { get; set; } = 0;         // from API/SP if available
-        public DateTime LastSync { get; set; } = DateTime.Now; // when this page last synced with DB
+        public int TotalCount { get; set; } = 0;
+        public DateTime LastSync { get; set; } = DateTime.Now;
     }
 }

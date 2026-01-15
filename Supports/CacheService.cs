@@ -1,5 +1,5 @@
-﻿using PatronGamingMonitor.Models;
-using NLog;
+﻿using NLog;
+using PatronGamingMonitor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
