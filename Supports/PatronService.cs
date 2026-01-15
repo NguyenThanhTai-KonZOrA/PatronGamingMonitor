@@ -18,14 +18,18 @@ namespace PatronGamingMonitor.Supports
         private readonly string _cacheDirectory;
         private bool _disposed = false;
         private readonly int _fileRetentionDays;
+        private int _requestTimeoutSeconds;
 
         public PatronService()
         {
             try
             {
+                _requestTimeoutSeconds = int.TryParse(
+                    ConfigurationManager.AppSettings["RequestClientTimeoutSeconds"], out var timeout) ? timeout : 60;
+
                 _httpClient = new HttpClient
                 {
-                    Timeout = TimeSpan.FromSeconds(30)
+                    Timeout = TimeSpan.FromSeconds(_requestTimeoutSeconds)
                 };
 
                 _patronBaseUrl = ConfigurationManager.AppSettings["LevyBaseUrl"]

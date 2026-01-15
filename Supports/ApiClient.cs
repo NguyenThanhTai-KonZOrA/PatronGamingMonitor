@@ -19,14 +19,18 @@ namespace PatronGamingMonitor.Supports
         private readonly string _patronBaseUrl;
         private readonly string _deploymentBaseUrl;
         private bool _disposed = false;
+        private int _requestTimeoutSeconds;
 
         public ApiClient()
         {
             try
             {
+                _requestTimeoutSeconds = int.TryParse(
+                    ConfigurationManager.AppSettings["RequestClientTimeoutSeconds"], out var timeout) ? timeout : 60;
+
                 _httpClient = new HttpClient
                 {
-                    Timeout = TimeSpan.FromSeconds(30)
+                    Timeout = TimeSpan.FromSeconds(_requestTimeoutSeconds)
                 };
 
                 _deploymentBaseUrl = ConfigurationManager.AppSettings["DeploymentBaseUrl"]
