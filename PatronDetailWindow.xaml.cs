@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -59,6 +60,20 @@ namespace PatronGamingMonitor.Views
             if (_images.Count == 0)
             {
                 _images.Add(GetPlaceholderImage());
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Optional: Adjust Viewbox behavior based on window size
+            if (e.NewSize.Height < 700)
+            {
+                // For smaller screens, ensure content fits
+                ContentViewbox.StretchDirection = StretchDirection.DownOnly;
+            }
+            else
+            {
+                ContentViewbox.StretchDirection = StretchDirection.Both;
             }
         }
 
@@ -224,6 +239,8 @@ namespace PatronGamingMonitor.Views
                 OnPropertyChanged();
             }
         }
+
+      
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
