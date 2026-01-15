@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace PatronGamingMonitor.ViewModels
         private DispatcherTimer _countdownTimer;
         private DispatcherTimer _clockTimer;
         private DispatcherTimer _autoRefreshTimer;
+        private DispatcherTimer _networkCheckTimer;
         private readonly object _timerLock = new object();
         private readonly int _cacheExpirySeconds;
         private CancellationTokenSource _loadCancellation;
@@ -32,6 +34,8 @@ namespace PatronGamingMonitor.ViewModels
         private bool _isPendingFilter = false;
         private List<LevyTicket> _filteredAndSortedCache = new List<LevyTicket>();
         private bool _isUpdatingSort = false;
+        private int _reconnectAttempt = 0;
+        private const int MAX_RECONNECT_ATTEMPTS = 5;
 
         #region Properties
 
@@ -61,6 +65,27 @@ namespace PatronGamingMonitor.ViewModels
         {
             get => _connectionStatus;
             set { _connectionStatus = value; OnPropertyChanged(); }
+        }
+
+        private bool _isNetworkDisconnected = false;
+        public bool IsNetworkDisconnected
+        {
+            get => _isNetworkDisconnected;
+            set { _isNetworkDisconnected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isReconnecting = false;
+        public bool IsReconnecting
+        {
+            get => _isReconnecting;
+            set { _isReconnecting = value; OnPropertyChanged(); }
+        }
+
+        private string _networkStatusMessage = "Reconnecting...";
+        public string NetworkStatusMessage
+        {
+            get => _networkStatusMessage;
+            set { _networkStatusMessage = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<LevyTicket> AllTicketsSource { get; set; } = new ObservableCollection<LevyTicket>();
@@ -173,7 +198,6 @@ namespace PatronGamingMonitor.ViewModels
             }
         }
 
-        // Cập nhật properties cho checkboxes
         public bool IsFilter12HoursChecked
         {
             get => Filter12Hours;
@@ -265,7 +289,6 @@ namespace PatronGamingMonitor.ViewModels
             set { _isLoading = value; OnPropertyChanged(); }
         }
 
-        // Save sort state
         private string _currentSortColumn;
         private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
 
@@ -279,6 +302,7 @@ namespace PatronGamingMonitor.ViewModels
         public ICommand RefreshCommand { get; private set; }
         public ICommand ApplyFilterCommand { get; private set; }
         public ICommand ClearSearchCommand { get; private set; }
+        public ICommand RetryConnectionCommand { get; private set; }
 
         #endregion
 
@@ -309,12 +333,10 @@ namespace PatronGamingMonitor.ViewModels
                 if (!int.TryParse(ConfigurationManager.AppSettings["CacheExpirySeconds"], out _cacheExpirySeconds))
                     _cacheExpirySeconds = 30;
 
-                //InitializeSignalR();
                 _ = LoadVersionAsync();
                 InitializeClockTimer();
                 InitializeAutoRefreshTimer();
-
-                //Logger.Info("MainWindowViewModel initialized successfully");
+                InitializeNetworkMonitoring();
             }
             catch (Exception ex)
             {
@@ -353,8 +375,6 @@ namespace PatronGamingMonitor.ViewModels
 
                 _clockTimer.Start();
                 CurrentTime = DateTime.Now.ToString("HH:mm:ss");
-
-                //Logger.Info("🕒 Clock timer initialized and started");
             }
             catch (Exception ex)
             {
@@ -396,7 +416,6 @@ namespace PatronGamingMonitor.ViewModels
 
                     if (elapsed >= _cacheExpirySeconds)
                     {
-                        //Logger.Info("Auto-refresh triggered (elapsed: {Elapsed}s)", elapsed);
                         await LoadTicketsFromApiAsync();
                     }
                 };
@@ -407,6 +426,113 @@ namespace PatronGamingMonitor.ViewModels
             catch (Exception ex)
             {
                 Logger.Error(ex, "❌ Failed to initialize auto-refresh timer");
+            }
+        }
+
+        private void InitializeNetworkMonitoring()
+        {
+            try
+            {
+                NetworkChange.NetworkAvailabilityChanged += OnNetworkAvailabilityChanged;
+
+                _networkCheckTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(5)
+                };
+
+                _networkCheckTimer.Tick += async (s, e) => await CheckNetworkStatusAsync();
+                _networkCheckTimer.Start();
+
+                Logger.Info("🌐 Network monitoring initialized");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "❌ Failed to initialize network monitoring");
+            }
+        }
+
+        private async void OnNetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                if (e.IsAvailable)
+                {
+                    Logger.Info("✅ Network connection restored");
+                    await OnNetworkRestored();
+                }
+                else
+                {
+                    Logger.Warn("⚠️ Network connection lost");
+                    OnNetworkLost();
+                }
+            });
+        }
+
+        private async Task CheckNetworkStatusAsync()
+        {
+            try
+            {
+                bool isConnected = NetworkInterface.GetIsNetworkAvailable();
+
+                if (!isConnected && !IsNetworkDisconnected)
+                {
+                    OnNetworkLost();
+                }
+                else if (isConnected && IsNetworkDisconnected)
+                {
+                    await OnNetworkRestored();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "❌ Error checking network status");
+            }
+        }
+
+        private void OnNetworkLost()
+        {
+            IsNetworkDisconnected = true;
+            IsReconnecting = false;
+            _reconnectAttempt = 0;
+            NetworkStatusMessage = "Network Disconnected - Connection Lost";
+            Logger.Warn("⚠️ Network disconnected - showing notification");
+        }
+
+        private async Task OnNetworkRestored()
+        {
+            if (!IsNetworkDisconnected)
+                return;
+
+            IsReconnecting = true;
+            _reconnectAttempt++;
+
+            NetworkStatusMessage = $"Reconnecting... (Attempt {_reconnectAttempt}/{MAX_RECONNECT_ATTEMPTS})";
+            Logger.Info($"🔄 Attempting to reconnect ({_reconnectAttempt}/{MAX_RECONNECT_ATTEMPTS})");
+
+            try
+            {
+                await LoadTicketsFromApiAsync();
+
+                IsNetworkDisconnected = false;
+                IsReconnecting = false;
+                _reconnectAttempt = 0;
+                Logger.Info("✅ Successfully reconnected");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "❌ Reconnection failed");
+
+                if (_reconnectAttempt >= MAX_RECONNECT_ATTEMPTS)
+                {
+                    IsReconnecting = false;
+                    NetworkStatusMessage = "Reconnection failed - Please check your network";
+                    Logger.Error("❌ Max reconnection attempts reached");
+                }
+                else
+                {
+                    await Task.Delay(3000);
+                    await OnNetworkRestored();
+                }
             }
         }
 
@@ -529,11 +655,21 @@ namespace PatronGamingMonitor.ViewModels
                     SearchText = string.Empty;
                     Logger.Info("🧹 Search cleared");
                 });
+
+            RetryConnectionCommand = new RelayCommand<object>(
+                p => IsNetworkDisconnected && !IsReconnecting,
+                async p =>
+                {
+                    Logger.Info("🔄 Manual retry connection triggered");
+                    _reconnectAttempt = 0;
+                    await OnNetworkRestored();
+                });
         }
 
         #endregion
 
         #region Data Loading Methods
+
         private async Task LoadVersionAsync()
         {
             try
@@ -549,7 +685,6 @@ namespace PatronGamingMonitor.ViewModels
                 }
                 else
                 {
-                    // Fallback to config if API returns null/empty
                     string configVersion = ConfigurationManager.AppSettings["ApplicationVersion"] ?? "1.1.0";
                     CurrentVersion = $"Version: {configVersion}";
                     Logger.Warn("API returned null/empty version, using config: {Version}", configVersion);
@@ -558,14 +693,11 @@ namespace PatronGamingMonitor.ViewModels
             catch (Exception ex)
             {
                 Logger.Error(ex, "Failed to load version from API");
-
-                // Fallback to App.config if API call failed
                 string configVersion = ConfigurationManager.AppSettings["ApplicationVersion"] ?? "1.1.0";
                 CurrentVersion = $"Version: {configVersion}";
                 Logger.Warn("Using fallback version: {Version}", configVersion);
             }
         }
-
 
         private async Task LoadTicketsFromApiAsync()
         {
@@ -575,8 +707,6 @@ namespace PatronGamingMonitor.ViewModels
                 _loadCancellation = new CancellationTokenSource();
 
                 StopCountdownTimer();
-
-                //Logger.Info("🔄 Loading tickets from API/File...");
 
                 var result = await _apiClient.GetLevyTicketsPagedAsync(
                     1, 50000, "All", _loadCancellation.Token);
@@ -598,10 +728,7 @@ namespace PatronGamingMonitor.ViewModels
                 Logger.Info("Cached {Count} tickets", result.Items.Count);
 
                 ApplyClientSideFilter();
-
                 StartCountdownTimer();
-
-                //Logger.Info("Tickets loaded and cached successfully");
             }
             catch (OperationCanceledException)
             {
@@ -610,6 +737,12 @@ namespace PatronGamingMonitor.ViewModels
             catch (Exception ex)
             {
                 Logger.Error(ex, "❌ Error loading tickets from API");
+
+                if (!NetworkInterface.GetIsNetworkAvailable())
+                {
+                    OnNetworkLost();
+                }
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Error loading tickets:\n\n{ex.Message}",
@@ -641,7 +774,6 @@ namespace PatronGamingMonitor.ViewModels
 
                     var filteredList = allTickets.AsEnumerable();
 
-                    // Free-text Search Filter
                     if (!string.IsNullOrWhiteSpace(SearchText))
                     {
                         var searchLower = SearchText.Trim().ToLowerInvariant();
@@ -656,33 +788,22 @@ namespace PatronGamingMonitor.ViewModels
                         );
                     }
 
-                    // Filter by FilterType (All Players hoặc Alerted Players)
-                    if (FilterType == "<30") // Alerted Players
+                    if (FilterType == "<30")
                     {
-                        // Alerted Players: Playing > 43200 (12 hours)
                         filteredList = filteredList.Where(t => t.PlayingTime > 43200);
                     }
-                    // Nếu FilterType == "All" thì không filter, lấy tất cả
 
-                    // Filter by Playing Time checkboxes
                     if (Filter12Hours || Filter24Hours || Filter48Hours)
                     {
                         filteredList = filteredList.Where(t =>
                         {
                             bool match = false;
-
-                            // 12H: 720-1439 phút (12-23.99 giờ)
                             if (Filter12Hours && t.PlayingTime >= 43200 && t.PlayingTime < 86400)
                                 match = true;
-
-                            // 24H: 1440-2879 phút (24-47.99 giờ)
                             if (Filter24Hours && t.PlayingTime >= 86400 && t.PlayingTime < 172800)
                                 match = true;
-
-                            // 48H: >= 2880 phút (>= 48 giờ)
                             if (Filter48Hours && t.PlayingTime >= 172800)
                                 match = true;
-
                             return match;
                         });
                     }
@@ -691,7 +812,6 @@ namespace PatronGamingMonitor.ViewModels
                     TotalSlot = filtered.Count(t => t.Type.Equals("Slot", StringComparison.OrdinalIgnoreCase));
                     TotalTable = filtered.Count(t => t.Type.Equals("Table", StringComparison.OrdinalIgnoreCase));
 
-                    // APPLY SORTING
                     if (!string.IsNullOrEmpty(_currentSortColumn))
                     {
                         if (_currentSortDirection == ListSortDirection.Ascending)
@@ -704,7 +824,6 @@ namespace PatronGamingMonitor.ViewModels
                         }
                     }
 
-                    // Save filtered and sorted cache
                     _filteredAndSortedCache = filtered;
 
                     var totalCount = filtered.Count;
@@ -755,9 +874,6 @@ namespace PatronGamingMonitor.ViewModels
                 {
                     AllTicketsSource.Add(ticket);
                 }
-
-                //Logger.Debug("📄 Page {Page}/{TotalPages} loaded with {Count} items",
-                //    PageIndex, TotalPages, AllTicketsSource.Count);
             }
             catch (Exception ex)
             {
@@ -772,7 +888,6 @@ namespace PatronGamingMonitor.ViewModels
                 var prop = obj.GetType().GetProperty(propertyName);
                 var value = prop?.GetValue(obj);
 
-                // Handle null values for proper sorting
                 if (value == null)
                 {
                     if (prop?.PropertyType == typeof(string))
@@ -865,9 +980,6 @@ namespace PatronGamingMonitor.ViewModels
 
         #region Public Methods for Sorting
 
-        /// <summary>
-        /// Public method called from code-behind when user clicks column header
-        /// </summary>
         public void SortData(string columnName, ListSortDirection direction)
         {
             if (string.IsNullOrEmpty(columnName)) return;
@@ -879,7 +991,6 @@ namespace PatronGamingMonitor.ViewModels
 
                 Logger.Info("User clicked sort: {Column} {Direction}", columnName, direction);
 
-                // Re-apply filter and sort on entire dataset
                 ApplyClientSideFilter();
             }
             catch (Exception ex)
@@ -898,6 +1009,8 @@ namespace PatronGamingMonitor.ViewModels
             {
                 Logger.Info("🧹 Disposing MainWindowViewModel...");
 
+                NetworkChange.NetworkAvailabilityChanged -= OnNetworkAvailabilityChanged;
+
                 _loadCancellation?.Cancel();
                 _loadCancellation?.Dispose();
 
@@ -905,6 +1018,7 @@ namespace PatronGamingMonitor.ViewModels
                 _clockTimer?.Stop();
                 _autoRefreshTimer?.Stop();
                 _filterDebounceTimer?.Stop();
+                _networkCheckTimer?.Stop();
                 _signalRService?.Dispose();
                 _apiClient?.Dispose();
 

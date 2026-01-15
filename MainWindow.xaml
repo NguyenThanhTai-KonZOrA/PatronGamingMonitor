@@ -43,6 +43,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <!-- Network Status Bar -->
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -144,8 +146,91 @@ Margin="0,4,0,0">
             Panel.ZIndex="1000"
             Tag="" />
 
+        <!-- NETWORK STATUS BAR -->
+        <Border Grid.Row="1"
+                Background="#FF6B6B"
+                Height="45"
+                Panel.ZIndex="999"
+                Visibility="{Binding IsNetworkDisconnected, Converter={StaticResource BooleanToVisibility}}">
+            <Grid Margin="20,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Spinning Icon -->
+                    <TextBlock Text="⚠" FontSize="20" Foreground="White" Margin="0,0,12,0" VerticalAlignment="Center">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform x:Name="NetworkIconRotation" CenterX="10" CenterY="10"/>
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReconnecting}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)"
+                                                        From="0" To="360" Duration="0:0:2" RepeatBehavior="Forever"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- Status Message -->
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Network Disconnected - Connection Lost"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReconnecting}" Value="True">
+                                        <Setter Property="Text" Value="{Binding NetworkStatusMessage}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- Retry Button -->
+                    <Button Content="Retry Now" 
+                            Margin="20,0,0,0"
+                            Padding="15,5"
+                            FontSize="13"
+                            FontWeight="Bold"
+                            Background="White"
+                            Foreground="#FF6B6B"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Command="{Binding RetryConnectionCommand}"
+                            Visibility="{Binding IsReconnecting, Converter={StaticResource InverseBooleanConverter}}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="5"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <!-- MAIN CONTENT -->
-        <Grid Grid.Row="1" Margin="20">
+        <Grid Grid.Row="2" Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
