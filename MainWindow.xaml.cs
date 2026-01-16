@@ -88,6 +88,17 @@ namespace PatronGamingMonitor
             {
                 // Fetch patron information from API
                 patronInfo = await _patronService.GetPatronInformationAsync(selectedTicket.PlayerID);
+                if (patronInfo != null)
+                {
+                    if (patronInfo.gender == "F")
+                    {
+                        patronInfo.gender = "Female";
+                    }
+                    else
+                    {
+                        patronInfo.gender = "Male";
+                    }
+                }
 
                 if (patronInfo == null)
                 {
@@ -118,6 +129,25 @@ namespace PatronGamingMonitor
             if (patronInfo != null)
             {
                 var patronWindow = new PatronDetailWindow(patronInfo);
+
+                // IMPORTANT: Calculate max height based on MainWindow's actual height
+                double maxHeight = this.ActualHeight * 0.9; // 90% of MainWindow height
+                double maxWidth = this.ActualWidth * 0.4; // 40% of MainWindow width
+
+                // Set max constraints to prevent popup from being larger than MainWindow
+                patronWindow.MaxHeight = maxHeight;
+                patronWindow.MaxWidth = maxWidth;
+
+                // Adjust initial size if needed
+                if (patronWindow.Height > maxHeight)
+                {
+                    patronWindow.Height = maxHeight;
+                }
+                if (patronWindow.Width > maxWidth)
+                {
+                    patronWindow.Width = maxWidth;
+                }
+
                 patronWindow.ShowDialog();
             }
         }

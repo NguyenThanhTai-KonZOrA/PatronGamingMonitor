@@ -6,16 +6,17 @@
     xmlns:userControls="clr-namespace:PatronGamingMonitor.UserControls"
     mc:Ignorable="d"
     Title="Patron Information"
-    MinHeight="600"
-    MinWidth="400"
-    Height="650"
+    MinHeight="400"
+    MinWidth="350"
+    Height="850"
     Width="500"
     WindowStyle="None"
     ResizeMode="CanResize"
     Background="Transparent"
     AllowsTransparency="True"
     WindowStartupLocation="CenterScreen"
-    SizeChanged="Window_SizeChanged">
+    SizeChanged="Window_SizeChanged"
+    Loaded="Window_Loaded">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -140,10 +141,10 @@
             </Border>
 
             <!-- Content with Viewbox for Responsive Scaling -->
-            <Viewbox Grid.Row="1" 
-                     x:Name="ContentViewbox"
-                     Stretch="Uniform" 
-                     StretchDirection="Both">
+            <Viewbox Grid.Row="1"
+                x:Name="ContentViewbox"
+                Stretch="Uniform"
+                StretchDirection="Both">
                 <Grid Width="500" Height="830">
                     <StackPanel Margin="20">
 
@@ -233,7 +234,8 @@
                                                     <Style TargetType="Border">
                                                         <Style.Triggers>
                                                             <!-- Hover Effect -->
-                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                            <Trigger Property="IsMouseOver"
+                                                                Value="True">
                                                                 <Setter Property="BorderBrush"
                                                                     Value="#E1B7A7" />
                                                                 <Setter Property="Effect">
@@ -248,7 +250,8 @@
                                                             </Trigger>
 
                                                             <!-- Selected Effect -->
-                                                            <DataTrigger Binding="{Binding IsSelected}"
+                                                            <DataTrigger
+                                                                Binding="{Binding IsSelected}"
                                                                 Value="True">
                                                                 <Setter Property="BorderBrush"
                                                                     Value="#1A3650" />
@@ -268,7 +271,8 @@
                                                     </Style>
                                                 </Border.Style>
 
-                                                <!-- WRAP all Image and Selected Indicator to one Grid -->
+                                                <!-- WRAP all Image and Selected Indicator to one
+                                                Grid -->
                                                 <Grid>
                                                     <!-- Thumbnail Image -->
                                                     <Image Source="{Binding ImageSource}"
@@ -413,7 +417,7 @@
                         <Button Content="Close"
                             Width="120"
                             Height="40"
-                            Margin="0,0,0,10"
+                            Margin="0,0,0,0"
                             Background="#1A3650"
                             Foreground="White"
                             FontWeight="Bold"

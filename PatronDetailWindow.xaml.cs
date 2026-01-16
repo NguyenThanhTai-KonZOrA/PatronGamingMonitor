@@ -40,6 +40,31 @@ namespace PatronGamingMonitor.Views
             UpdateCarousel();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Get screen working area using WPF native API
+            var workingArea = SystemParameters.WorkArea;
+
+            // Limit to 90% of screen height
+            double maxHeight = workingArea.Height * 0.9;
+            if (this.ActualHeight > maxHeight)
+            {
+                this.Height = maxHeight;
+            }
+
+            // Limit to 40% of screen width (optional)
+            double maxWidth = workingArea.Width * 0.4;
+            if (maxWidth < 400) maxWidth = 400; // Ensure minimum width
+            if (this.ActualWidth > maxWidth)
+            {
+                this.Width = maxWidth;
+            }
+
+            // Center window after size adjustment
+            this.Left = workingArea.Left + (workingArea.Width - this.ActualWidth) / 2;
+            this.Top = workingArea.Top + (workingArea.Height - this.ActualHeight) / 2;
+        }
+
         private void LoadImages()
         {
             _images = new List<BitmapImage>();
@@ -65,15 +90,21 @@ namespace PatronGamingMonitor.Views
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Optional: Adjust Viewbox behavior based on window size
-            if (e.NewSize.Height < 700)
+            // Adjust Viewbox behavior based on window size for better responsiveness
+            if (e.NewSize.Height < 600)
             {
-                // For smaller screens, ensure content fits
+                // For very small screens, scale down only
                 ContentViewbox.StretchDirection = StretchDirection.DownOnly;
+            }
+            else if (e.NewSize.Height < 750)
+            {
+                // For medium screens, allow both directions
+                ContentViewbox.StretchDirection = StretchDirection.Both;
             }
             else
             {
-                ContentViewbox.StretchDirection = StretchDirection.Both;
+                // For large screens, maintain original size
+                ContentViewbox.StretchDirection = StretchDirection.DownOnly;
             }
         }
 
@@ -157,18 +188,6 @@ namespace PatronGamingMonitor.Views
 
             // Update thumbnail selection
             UpdateThumbnailSelection();
-
-            // Show/hide navigation buttons based on image count
-            //if (_images.Count <= 1)
-            //{
-            //    PrevButton.Visibility = Visibility.Collapsed;
-            //    NextButton.Visibility = Visibility.Collapsed;
-            //}
-            //else
-            //{
-            //    PrevButton.Visibility = Visibility.Visible;
-            //    NextButton.Visibility = Visibility.Visible;
-            //}
         }
 
         // Update thumbnail selection
@@ -239,8 +258,6 @@ namespace PatronGamingMonitor.Views
                 OnPropertyChanged();
             }
         }
-
-      
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

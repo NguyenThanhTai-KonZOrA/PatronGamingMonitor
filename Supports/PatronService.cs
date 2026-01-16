@@ -88,12 +88,12 @@ namespace PatronGamingMonitor.Supports
                         var age = now - fileInfo.LastWriteTime;
 
                         // Delete files older than the configured retention period
-                        if (age.TotalDays > _fileRetentionDays)
+                        if (age.TotalHours > _fileRetentionDays)
                         {
                             File.Delete(file);
                             deletedCount++;
-                            Logger.Info("🗑️ Deleted old cache file: {FileName} (Age: {Age:F1} days)",
-                                Path.GetFileName(file), age.TotalDays);
+                            Logger.Info("🗑️ Deleted old cache file: {FileName} (Age: {Age:F1} hours)",
+                                Path.GetFileName(file), age.TotalHours);
                         }
                     }
                     catch (Exception ex)
