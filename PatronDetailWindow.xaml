@@ -14,7 +14,7 @@
     ResizeMode="CanResize"
     Background="Transparent"
     AllowsTransparency="True"
-    WindowStartupLocation="CenterScreen"
+    WindowStartupLocation="Manual"
     SizeChanged="Window_SizeChanged"
     Loaded="Window_Loaded">
 

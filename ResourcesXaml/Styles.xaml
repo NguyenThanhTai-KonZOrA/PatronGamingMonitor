@@ -115,7 +115,6 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="5,2" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#1A1A1A" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -124,8 +123,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
                     <Border Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderThickness="0"
                     Padding="{TemplateBinding Padding}">
                         <ContentPresenter VerticalAlignment="Center"
                         HorizontalAlignment="Center" />
@@ -133,13 +131,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="#1A1A1A" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
+
+
 
     <Style TargetType="ToolTip">
         <Setter Property="HorizontalOffset" Value="1" />
@@ -166,7 +160,7 @@
         <Setter Property="Margin" Value="0,2" />
         <Setter Property="Height" Value="34" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Background" Value="{Binding StatusColor}" />
         <Setter Property="BorderBrush" Value="Transparent" />
@@ -175,21 +169,21 @@
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip Background="#1A3650"
-                    BorderBrush="#E1B7A7"
-                    BorderThickness="2"
-                    Padding="12,8"
-                    HasDropShadow="True">
+                BorderBrush="#E1B7A7"
+                BorderThickness="2"
+                Padding="12,8"
+                HasDropShadow="True">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="👆 "
-                            FontSize="14"
-                            Foreground="#E1B7A7"
-                            VerticalAlignment="Center"
-                            Margin="0,0,8,0" />
+                        FontSize="14"
+                        Foreground="#E1B7A7"
+                        VerticalAlignment="Center"
+                        Margin="0,0,8,0" />
                         <TextBlock Text="Double-click to view profile"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Foreground="White"
-                            VerticalAlignment="Center" />
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        VerticalAlignment="Center" />
                     </StackPanel>
                 </ToolTip>
             </Setter.Value>
@@ -199,13 +193,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridRow">
                     <Border x:Name="RowBorder"
-                        CornerRadius="6"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="1"
-                        SnapsToDevicePixels="True">
+                    CornerRadius="6"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="True">
                         <DataGridCellsPresenter Margin="2"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -214,14 +208,27 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="#E1B7A7" />
-                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderThickness" Value="1" />
             </Trigger>
 
+            <!-- IMPROVED: Better selected state -->
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="BorderBrush" Value="#1A3650" />
-                <Setter Property="BorderThickness" Value="10" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="#E8F4F8" />
                 <Setter Property="FontWeight" Value="Bold" />
             </Trigger>
+
+            <!-- Combined hover + selected state -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="#1A3650" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="#D4E8F0" />
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 

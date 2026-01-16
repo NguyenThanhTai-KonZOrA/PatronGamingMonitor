@@ -71,13 +71,33 @@ namespace PatronGamingMonitor
 
         private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dataGrid = sender as DataGrid;
-            if (dataGrid == null || dataGrid.SelectedItem == null)
-                return;
+            System.Diagnostics.Debug.WriteLine("DataGrid_MouseDoubleClick fired");
 
-            var selectedTicket = dataGrid.SelectedItem as LevyTicket;
-            if (selectedTicket == null || selectedTicket.PlayerID <= 0)
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null) return;
+
+            var row = ItemsControl.ContainerFromElement(dataGrid,
+                e.OriginalSource as DependencyObject) as DataGridRow;
+
+            if (row == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Row is null - click was not on a row");
                 return;
+            }
+
+            var selectedTicket = row.Item as LevyTicket;
+            if (selectedTicket == null || selectedTicket.PlayerID <= 0)
+            {
+                System.Diagnostics.Debug.WriteLine("No valid ticket in row");
+                return;
+            }
+
+            // ✅ FIX: Set the row as selected
+            dataGrid.SelectedItem = selectedTicket;
+            dataGrid.Focus();
+            row.IsSelected = true;
+
+            System.Diagnostics.Debug.WriteLine($"Row selected for Player ID: {selectedTicket.PlayerID}");
 
             // Show loading indicator
             Mouse.OverrideCursor = Cursors.Wait;
@@ -129,6 +149,9 @@ namespace PatronGamingMonitor
             {
                 var patronWindow = new PatronDetailWindow(patronInfo);
 
+                // ✅ FIX: Set Owner directly to this window
+                patronWindow.Owner = this;
+
                 // 90% of MainWindow height
                 double maxHeight = this.ActualHeight * 0.9;
                 // 40% of MainWindow width
@@ -137,7 +160,6 @@ namespace PatronGamingMonitor
                 // Set max constraints to prevent popup from being larger than MainWindow
                 patronWindow.MaxHeight = maxHeight;
                 patronWindow.MaxWidth = maxWidth;
-                patronWindow.Owner = Window.GetWindow(this);
 
                 // Adjust initial size if needed
                 if (patronWindow.Height > maxHeight)
@@ -148,6 +170,7 @@ namespace PatronGamingMonitor
                 {
                     patronWindow.Width = maxWidth;
                 }
+
                 patronWindow.ShowDialog();
             }
         }
