@@ -104,7 +104,7 @@ namespace PatronGamingMonitor.Supports
 
                 if (deletedCount > 0)
                 {
-                    Logger.Info("✅ Cleaned {Count} old cache files from PatronCache", deletedCount);
+                    Logger.Info("Cleaned {Count} old cache files from PatronCache", deletedCount);
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace PatronGamingMonitor.Supports
                 var cachedPatron = LoadFromCache(patronId);
                 if (cachedPatron != null)
                 {
-                    Logger.Info("✅ Loaded patron {PatronId} from cache", patronId);
+                    Logger.Info("Loaded patron {PatronId} from cache", patronId);
                     return cachedPatron;
                 }
 
@@ -152,7 +152,7 @@ namespace PatronGamingMonitor.Supports
                 {
                     // Save to cache
                     SaveToCache(patron);
-                    Logger.Info("✅ Fetched and cached patron {PatronId}", patronId);
+                    Logger.Info("Fetched and cached patron {PatronId}", patronId);
                     return patron;
                 }
 

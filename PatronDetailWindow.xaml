@@ -6,15 +6,15 @@
     xmlns:userControls="clr-namespace:PatronGamingMonitor.UserControls"
     mc:Ignorable="d"
     Title="Patron Information"
-    MinHeight="400"
-    MinWidth="350"
-    Height="850"
-    Width="500"
+    MinHeight="550"
+    MinWidth="450"
+    Height="890"
+    Width="550"
     WindowStyle="None"
     ResizeMode="CanResize"
     Background="Transparent"
     AllowsTransparency="True"
-    WindowStartupLocation="Manual"
+    WindowStartupLocation="CenterScreen"
     SizeChanged="Window_SizeChanged"
     Loaded="Window_Loaded">
 
@@ -141,11 +141,11 @@
             </Border>
 
             <!-- Content with Viewbox for Responsive Scaling -->
-            <Viewbox Grid.Row="1"
+            <ScrollViewer Grid.Row="1"
                 x:Name="ContentViewbox"
-                Stretch="Uniform"
-                StretchDirection="Both">
-                <Grid Width="500" Height="830">
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled">
+                <Grid Width="500">
                     <StackPanel Margin="20">
 
                         <!-- IMAGE CAROUSEL -->
@@ -455,7 +455,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-            </Viewbox>
+            </ScrollViewer>
 
             <!-- Loading Indicator -->
             <Border Grid.Row="1"

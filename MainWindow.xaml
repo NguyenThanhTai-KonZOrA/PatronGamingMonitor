@@ -468,13 +468,13 @@
                                 <TextBlock VerticalAlignment="Center" Cursor="Hand"
                                     MouseLeftButtonDown="TableFilter_Click"
                                     ToolTip="Click to filter by Table">
-                                    <Run Text="Table: " Foreground="#1A3650" FontSize="15" />
+                                    <Run Text="Table: " Foreground="#1A3650" FontSize="15" FontWeight="Bold" />
                                     <Run Text="{Binding TotalTable, Mode=OneWay}" FontWeight="Bold"
                                         Foreground="#1A3650" FontSize="15" />
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
+                                                <Trigger Property="IsMouseOver" Value="False">
                                                     <Setter Property="TextDecorations"
                                                         Value="Underline" />
                                                 </Trigger>
@@ -490,13 +490,13 @@
                                 <TextBlock VerticalAlignment="Center" Cursor="Hand"
                                     MouseLeftButtonDown="SlotFilter_Click"
                                     ToolTip="Click to filter by Slot">
-                                    <Run Text="Slot: " Foreground="#1A3650" FontSize="15" />
+                                    <Run Text="Slot: " Foreground="#1A3650" FontSize="15"  FontWeight="Bold"/>
                                     <Run Text="{Binding TotalSlot, Mode=OneWay}" FontWeight="Bold"
                                         Foreground="#1A3650" FontSize="15" />
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
+                                                <Trigger Property="IsMouseOver" Value="False">
                                                     <Setter Property="TextDecorations"
                                                         Value="Underline" />
                                                 </Trigger>

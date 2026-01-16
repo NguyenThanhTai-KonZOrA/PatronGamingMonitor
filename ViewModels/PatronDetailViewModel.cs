@@ -75,7 +75,7 @@ namespace PatronGamingMonitor.ViewModels
                     }
 
                     PatronInfo = patron;
-                    Logger.Info("✅ Patron information loaded successfully");
+                    Logger.Info("Patron information loaded successfully");
                 }
                 else
                 {

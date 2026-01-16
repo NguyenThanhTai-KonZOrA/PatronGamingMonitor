@@ -498,7 +498,7 @@ namespace PatronGamingMonitor.ViewModels
             {
                 if (e.IsAvailable)
                 {
-                    Logger.Info("✅ Network connection restored");
+                    Logger.Info("Network connection restored");
                     await OnNetworkRestored();
                 }
                 else
@@ -557,7 +557,7 @@ namespace PatronGamingMonitor.ViewModels
                 IsNetworkDisconnected = false;
                 IsReconnecting = false;
                 _reconnectAttempt = 0;
-                Logger.Info("✅ Successfully reconnected");
+                Logger.Info("Successfully reconnected");
             }
             catch (Exception ex)
             {

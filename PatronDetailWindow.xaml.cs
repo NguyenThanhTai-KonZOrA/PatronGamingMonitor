@@ -90,22 +90,22 @@ namespace PatronGamingMonitor.Views
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Adjust Viewbox behavior based on window size for better responsiveness
-            if (e.NewSize.Height < 600)
-            {
-                // For very small screens, scale down only
-                ContentViewbox.StretchDirection = StretchDirection.DownOnly;
-            }
-            else if (e.NewSize.Height < 750)
-            {
-                // For medium screens, allow both directions
-                ContentViewbox.StretchDirection = StretchDirection.Both;
-            }
-            else
-            {
-                // For large screens, maintain original size
-                ContentViewbox.StretchDirection = StretchDirection.DownOnly;
-            }
+            //// Adjust Viewbox behavior based on window size for better responsiveness
+            //if (e.NewSize.Height < 600)
+            //{
+            //    // For very small screens, scale down only
+            //    ContentViewbox.StretchDirection = StretchDirection.DownOnly;
+            //}
+            //else if (e.NewSize.Height < 750)
+            //{
+            //    // For medium screens, allow both directions
+            //    ContentViewbox.StretchDirection = StretchDirection.Both;
+            //}
+            //else
+            //{
+            //    // For large screens, maintain original size
+            //    ContentViewbox.StretchDirection = StretchDirection.DownOnly;
+            //}
         }
 
         // Load thumbnails
