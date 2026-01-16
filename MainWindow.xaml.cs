@@ -121,7 +121,6 @@ namespace PatronGamingMonitor
             }
             finally
             {
-                // CRITICAL: Reset cursor BEFORE opening dialog
                 Mouse.OverrideCursor = null;
             }
 
@@ -130,13 +129,15 @@ namespace PatronGamingMonitor
             {
                 var patronWindow = new PatronDetailWindow(patronInfo);
 
-                // IMPORTANT: Calculate max height based on MainWindow's actual height
-                double maxHeight = this.ActualHeight * 0.9; // 90% of MainWindow height
-                double maxWidth = this.ActualWidth * 0.4; // 40% of MainWindow width
+                // 90% of MainWindow height
+                double maxHeight = this.ActualHeight * 0.9;
+                // 40% of MainWindow width
+                double maxWidth = this.ActualWidth * 0.4;
 
                 // Set max constraints to prevent popup from being larger than MainWindow
                 patronWindow.MaxHeight = maxHeight;
                 patronWindow.MaxWidth = maxWidth;
+                patronWindow.Owner = Window.GetWindow(this);
 
                 // Adjust initial size if needed
                 if (patronWindow.Height > maxHeight)
@@ -147,7 +148,6 @@ namespace PatronGamingMonitor
                 {
                     patronWindow.Width = maxWidth;
                 }
-
                 patronWindow.ShowDialog();
             }
         }

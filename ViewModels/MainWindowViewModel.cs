@@ -165,7 +165,19 @@ namespace PatronGamingMonitor.ViewModels
                 if (_filter12Hours != value)
                 {
                     _filter12Hours = value;
+
+                    if (value)
+                    {
+                        _filter24Hours = false;
+                        _filter48Hours = false;
+                        OnPropertyChanged(nameof(Filter24Hours));
+                        OnPropertyChanged(nameof(Filter48Hours));
+                        OnPropertyChanged(nameof(IsFilter24HoursChecked));
+                        OnPropertyChanged(nameof(IsFilter48HoursChecked));
+                    }
+
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsFilter12HoursChecked));
                     Logger.Info("Filter12Hours changed → {Value}", value);
                     ApplyClientSideFilterDebounced();
                 }
@@ -180,7 +192,19 @@ namespace PatronGamingMonitor.ViewModels
                 if (_filter24Hours != value)
                 {
                     _filter24Hours = value;
+
+                    if (value)
+                    {
+                        _filter12Hours = false;
+                        _filter48Hours = false;
+                        OnPropertyChanged(nameof(Filter12Hours));
+                        OnPropertyChanged(nameof(Filter48Hours));
+                        OnPropertyChanged(nameof(IsFilter12HoursChecked));
+                        OnPropertyChanged(nameof(IsFilter48HoursChecked));
+                    }
+
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsFilter24HoursChecked));
                     Logger.Info("Filter24Hours changed → {Value}", value);
                     ApplyClientSideFilterDebounced();
                 }
@@ -195,7 +219,19 @@ namespace PatronGamingMonitor.ViewModels
                 if (_filter48Hours != value)
                 {
                     _filter48Hours = value;
+
+                    if (value)
+                    {
+                        _filter12Hours = false;
+                        _filter24Hours = false;
+                        OnPropertyChanged(nameof(Filter12Hours));
+                        OnPropertyChanged(nameof(Filter24Hours));
+                        OnPropertyChanged(nameof(IsFilter12HoursChecked));
+                        OnPropertyChanged(nameof(IsFilter24HoursChecked));
+                    }
+
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsFilter48HoursChecked));
                     Logger.Info("Filter48Hours changed → {Value}", value);
                     ApplyClientSideFilterDebounced();
                 }
@@ -308,6 +344,7 @@ namespace PatronGamingMonitor.ViewModels
         public ICommand ClearSearchCommand { get; private set; }
         public ICommand RetryConnectionCommand { get; private set; }
         public ICommand ApplyTypeFilterCommand { get; private set; }
+        public ICommand ApplyHoursFilerCommand { get; private set; }
 
         #endregion
 
@@ -684,7 +721,6 @@ namespace PatronGamingMonitor.ViewModels
                     await OnNetworkRestored();
                 });
 
-            // NEW: Type Filter Command (Table/Slot)
             ApplyTypeFilterCommand = new RelayCommand<string>(
                 p => !IsLoading,
                 type =>
@@ -829,7 +865,7 @@ namespace PatronGamingMonitor.ViewModels
                         );
                     }
 
-                    // NEW: Filter by Type (Table/Slot)
+                    // Filter by Type (Table/Slot)
                     if (!string.IsNullOrEmpty(TypeFilter))
                     {
                         filteredList = filteredList.Where(t =>
@@ -842,24 +878,17 @@ namespace PatronGamingMonitor.ViewModels
                         filteredList = filteredList.Where(t => t.PlayingTime > 43200);
                     }
 
-                    // Filter by Playing Time checkboxes
-                    if (Filter12Hours || Filter24Hours || Filter48Hours)
+                    if (Filter12Hours)
                     {
-                        filteredList = filteredList.Where(t =>
-                        {
-                            bool match = false;
-
-                            if (Filter12Hours && t.PlayingTime >= 43200 && t.PlayingTime < 86400)
-                                match = true;
-
-                            if (Filter24Hours && t.PlayingTime >= 86400 && t.PlayingTime < 172800)
-                                match = true;
-
-                            if (Filter48Hours && t.PlayingTime >= 172800)
-                                match = true;
-
-                            return match;
-                        });
+                        filteredList = filteredList.Where(t => t.PlayingTime >= 43200); // >= 12 hours
+                    }
+                    else if (Filter24Hours)
+                    {
+                        filteredList = filteredList.Where(t => t.PlayingTime >= 86400); // >= 24 hours
+                    }
+                    else if (Filter48Hours)
+                    {
+                        filteredList = filteredList.Where(t => t.PlayingTime >= 172800); // >= 48 hours
                     }
 
                     var filtered = filteredList.ToList();
@@ -910,7 +939,6 @@ namespace PatronGamingMonitor.ViewModels
                 Logger.Error(ex, "❌ Error applying client-side filter");
             }
         }
-
         private void UpdatePagedView()
         {
             try

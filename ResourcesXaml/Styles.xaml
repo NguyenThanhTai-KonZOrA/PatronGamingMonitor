@@ -119,31 +119,26 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#1A1A1A" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="ToolTip" Value="{Binding Path=RowDetailsToolTipProperty}" />
+        <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
                     <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}">
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="{TemplateBinding Padding}">
                         <ContentPresenter VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                        HorizontalAlignment="Center" />
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Foreground" Value="#1A1A1A" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#1A1A1A" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="ToolTip">

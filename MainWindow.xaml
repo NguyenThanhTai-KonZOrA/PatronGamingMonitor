@@ -522,7 +522,7 @@
                             HorizontalGridLinesBrush="#F0F0F0"
                             MouseDoubleClick="DataGrid_MouseDoubleClick"
                             IsReadOnly="True"
-                            SelectionMode="Single"
+                            SelectionMode="Extended"
                             SelectionUnit="FullRow"
                             EnableRowVirtualization="True"
                             EnableColumnVirtualization="True"
