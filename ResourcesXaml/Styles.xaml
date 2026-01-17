@@ -215,7 +215,6 @@
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="BorderBrush" Value="#1A3650" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Background" Value="#E8F4F8" />
                 <Setter Property="FontWeight" Value="Bold" />
             </Trigger>
 
@@ -227,7 +226,6 @@
                 </MultiTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="#1A3650" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Background" Value="#D4E8F0" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>
