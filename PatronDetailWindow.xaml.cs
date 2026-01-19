@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -16,7 +15,6 @@ namespace PatronGamingMonitor.Views
     {
         private List<BitmapImage> _images;
         private int _currentImageIndex = 0;
-
         public PatronInformation PatronInfo { get; set; }
         public BitmapImage PatronImageSource { get; set; }
         public bool IsLoading { get; set; }
@@ -54,7 +52,8 @@ namespace PatronGamingMonitor.Views
 
             // Limit to 40% of screen width (optional)
             double maxWidth = workingArea.Width * 0.4;
-            if (maxWidth < 400) maxWidth = 400; // Ensure minimum width
+            // Ensure minimum width
+            if (maxWidth < 400) maxWidth = 400;
             if (this.ActualWidth > maxWidth)
             {
                 this.Width = maxWidth;
@@ -79,7 +78,6 @@ namespace PatronGamingMonitor.Views
             {
                 _images.Add(Base64ToImage(PatronInfo.patronPrimaryImageBase64));
             }
-
 
             // If no images, add placeholder
             if (_images.Count == 0)
@@ -119,7 +117,8 @@ namespace PatronGamingMonitor.Views
                 {
                     Index = i,
                     ImageSource = _images[i],
-                    IsSelected = i == 0 // First image is selected by default
+                    // First image is selected by default
+                    IsSelected = i == 0
                 });
             }
 
@@ -239,28 +238,5 @@ namespace PatronGamingMonitor.Views
         {
             Close();
         }
-    }
-
-    // Thumbnail Item Model
-    public class ThumbnailItem : INotifyPropertyChanged
-    {
-        private bool _isSelected;
-
-        public int Index { get; set; }
-        public BitmapImage ImageSource { get; set; }
-
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

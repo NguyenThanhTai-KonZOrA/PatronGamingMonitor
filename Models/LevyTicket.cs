@@ -11,7 +11,6 @@ namespace PatronGamingMonitor.Models
         private int _playingTime;
         private bool _isNew;
         private bool _isUpdated;
-
         public int PlayerID { get; set; }
         public string FullName { get; set; }
         public string Location { get; set; }
@@ -25,7 +24,6 @@ namespace PatronGamingMonitor.Models
         public string UsedStatus { get; set; }
         public string Area { get; set; }
         public string LocalStatus { get; set; }
-
 
         public int RemainingTime
         {

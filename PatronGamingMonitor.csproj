@@ -152,6 +152,7 @@
     <Compile Include="Models\ManifestApplicationResponse.cs" />
     <Compile Include="Models\PagedResult.cs" />
     <Compile Include="Models\PatronInformation.cs" />
+    <Compile Include="Models\ThumbnailItem.cs" />
     <Compile Include="PatronDetailWindow.xaml.cs">
       <DependentUpon>PatronDetailWindow.xaml</DependentUpon>
     </Compile>

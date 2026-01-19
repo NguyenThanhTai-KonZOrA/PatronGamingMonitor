@@ -151,9 +151,6 @@ namespace PatronGamingMonitor
             }
         }
 
-        /// <summary>
-        /// NEW METHOD: Show PatronDetailWindow centered on MainWindow's screen
-        /// </summary>
         private void ShowPatronDetailWindow(PatronInformation patronInfo)
         {
             var patronWindow = new PatronDetailWindow(patronInfo);
@@ -180,9 +177,6 @@ namespace PatronGamingMonitor
             patronWindow.ShowDialog();
         }
 
-        /// <summary>
-        /// Position child window at center of owner window
-        /// </summary>
         private void PositionWindowRelativeToOwner(Window childWindow)
         {
             // Ensure both windows are loaded

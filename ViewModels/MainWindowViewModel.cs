@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,13 +50,11 @@ namespace PatronGamingMonitor.ViewModels
             get => _currentTime;
             set { _currentTime = value; OnPropertyChanged(); }
         }
-
         public string CurrentVersion
         {
             get => _currentVersion;
             set { _currentVersion = value; OnPropertyChanged(); }
         }
-
         public string CurrentDate
         {
             get => DateTime.Now.ToString("dddd, dd MMMM yyyy");
@@ -138,7 +135,6 @@ namespace PatronGamingMonitor.ViewModels
             get => _totalPages;
             set { _totalPages = value; OnPropertyChanged(); }
         }
-
         public string RowCountDisplay => $"{TotalCount}";
 
         private int _totalCount;
@@ -156,7 +152,6 @@ namespace PatronGamingMonitor.ViewModels
         private bool _filter12Hours = false;
         private bool _filter24Hours = false;
         private bool _filter48Hours = false;
-
         public bool Filter12Hours
         {
             get => _filter12Hours;
@@ -183,7 +178,6 @@ namespace PatronGamingMonitor.ViewModels
                 }
             }
         }
-
         public bool Filter24Hours
         {
             get => _filter24Hours;
@@ -210,7 +204,6 @@ namespace PatronGamingMonitor.ViewModels
                 }
             }
         }
-
         public bool Filter48Hours
         {
             get => _filter48Hours;
@@ -237,19 +230,16 @@ namespace PatronGamingMonitor.ViewModels
                 }
             }
         }
-
         public bool IsFilter12HoursChecked
         {
             get => Filter12Hours;
             set => Filter12Hours = value;
         }
-
         public bool IsFilter24HoursChecked
         {
             get => Filter24Hours;
             set => Filter24Hours = value;
         }
-
         public bool IsFilter48HoursChecked
         {
             get => Filter48Hours;

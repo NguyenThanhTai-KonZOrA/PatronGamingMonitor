@@ -14,7 +14,6 @@ namespace PatronGamingMonitor
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static Mutex _singleInstanceMutex;
-
         protected override void OnStartup(StartupEventArgs e)
         {
             const string mutexName = "PatronResponsibleGamingAlert_SingleInstance_Mutex";
@@ -53,7 +52,6 @@ namespace PatronGamingMonitor
 
             base.OnStartup(e);
         }
-
         protected override void OnExit(ExitEventArgs e)
         {
             Logger.Info("Application shutting down...");
